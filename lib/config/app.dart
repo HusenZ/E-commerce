@@ -1,5 +1,5 @@
-import 'package:daprot_v1/app/constant/routes_manager.dart';
-import 'package:daprot_v1/app/constant/theme_manager.dart';
+import 'package:daprot_v1/config/routes/routes_manager.dart';
+import 'package:daprot_v1/config/theme/theme_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 

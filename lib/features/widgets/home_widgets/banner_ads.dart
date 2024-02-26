@@ -46,17 +46,20 @@ class BannerAds extends StatelessWidget {
     );
   }
 
-  Container displayAd(String url) {
-    return Container(
-      margin: const EdgeInsets.all(6.0),
-      height: 5.h,
-      width: 86.w,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.h),
-      ),
-      child: Image.network(
-        url,
-        fit: BoxFit.fill,
+  Material displayAd(String url) {
+    return Material(
+      elevation: 4.0,
+      child: Container(
+        margin: const EdgeInsets.all(6.0),
+        height: 5.h,
+        width: 86.w,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.h),
+        ),
+        child: Image.network(
+          url,
+          fit: BoxFit.fill,
+        ),
       ),
     );
   }
