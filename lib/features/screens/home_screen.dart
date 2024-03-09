@@ -1,14 +1,136 @@
 import 'package:daprot_v1/config/theme/colors_manager.dart';
-import 'package:daprot_v1/data/dummy_data/data_set.dart';
+import 'package:daprot_v1/features/widgets/home_widgets/category_display.dart';
 import 'package:daprot_v1/features/widgets/home_widgets/location_widget.dart';
-import 'package:daprot_v1/features/widgets/home_widgets/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:daprot_v1/features/widgets/home_widgets/banner_ads.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  String selectedOption = "All";
+
+  Widget _buildFilterSection(double screenWidth) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    double horizontalMargin = screenWidth * 0.01;
+    double verticalMargin = 0.001.w;
+    double iconSize = screenWidth * 0.045;
+    double borderRadius = screenWidth * 0.04;
+    double borderWidth = screenWidth * 0.0025;
+    double spacing = screenWidth * 0.02;
+    double padding = screenWidth * 0.015;
+    double avatarRadius = screenWidth * 0.027;
+    return Container(
+      margin: EdgeInsets.symmetric(
+        horizontal: horizontalMargin,
+        vertical: verticalMargin,
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                _buildFilterOption(context, 'All', Icons.shop, iconSize,
+                    borderRadius, borderWidth, spacing, padding, avatarRadius),
+                _buildFilterOption(context, 'Men', Icons.boy, iconSize,
+                    borderRadius, borderWidth, spacing, padding, avatarRadius),
+                _buildFilterOption(context, 'Women', Icons.girl, iconSize,
+                    borderRadius, borderWidth, spacing, padding, avatarRadius),
+                _buildFilterOption(context, 'Baby', Icons.child_care, iconSize,
+                    borderRadius, borderWidth, spacing, padding, avatarRadius),
+                _buildFilterOption(
+                    context,
+                    'Cosmetic',
+                    Icons.style_outlined,
+                    iconSize,
+                    borderRadius,
+                    borderWidth,
+                    spacing,
+                    padding,
+                    avatarRadius),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFilterOption(
+      BuildContext context,
+      String text,
+      IconData iconData,
+      double iconSize,
+      double borderRadius,
+      double borderWidth,
+      double spacing,
+      double padding,
+      double avatarRadius) {
+    final bool isSelected =
+        selectedOption == text; // Check if this option is selected
+    final borderColor =
+        isSelected ? ColorsManager.primaryColor : Colors.grey.withOpacity(0.3);
+    final iconColor = isSelected
+        ? ColorsManager.whiteColor
+        : ColorsManager.iconColor; // Change icon color based on selection
+    final textColor = isSelected ? ColorsManager.primaryColor : Colors.black;
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedOption = text;
+        });
+      },
+      child: Container(
+        padding: EdgeInsets.only(right: padding),
+        margin: EdgeInsets.symmetric(horizontal: spacing),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(borderRadius),
+          border: Border.all(
+            color: borderColor,
+            width: borderWidth,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: padding),
+              child: CircleAvatar(
+                backgroundColor: isSelected
+                    ? ColorsManager.secondaryColor
+                    : ColorsManager.unSelected,
+                radius: avatarRadius,
+                child: Icon(
+                  iconData,
+                  color: iconColor,
+                  size: iconSize,
+                ),
+              ),
+            ),
+            SizedBox(width: spacing),
+            Text(
+              text,
+              style: TextStyle(
+                fontSize: 10.sp, // Adjusted for screen width
+                color: textColor,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +146,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             expandedHeight: 15.h,
-            floating: false,
+            floating: true,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
@@ -104,14 +226,18 @@ class HomeScreen extends StatelessWidget {
               child: BannerAds(),
             ),
           ),
-          SliverList.builder(
-            itemCount: products.length,
-            itemBuilder: (context, index) {
-              return ProductCard(
-                index: index,
-                products: products,
-              );
-            },
+          SliverAppBar(
+            backgroundColor: ColorsManager.whiteColor,
+            elevation: 2,
+            toolbarHeight: 2.h,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              background:
+                  _buildFilterSection(MediaQuery.of(context).size.width),
+            ),
+          ),
+          DisplayProduct(
+            selectedOption: selectedOption,
           ),
         ],
       ),

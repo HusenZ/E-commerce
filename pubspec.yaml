@@ -67,6 +67,8 @@ flutter:
     - assets/images/dummy_image/shirt1.jpg
     - assets/images/dummy_image/shoe1.jpg
     - assets/images/dummy_image/wtop.jpg
+    - assets/images/dummy_image/baby.jpg
+    - assets/images/dummy_image/cosmetic.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

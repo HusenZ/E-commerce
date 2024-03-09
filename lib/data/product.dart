@@ -1,4 +1,4 @@
-enum Category { men, women, child, cosmetic }
+enum Category { men, women, baby, cosmetic }
 
 class Product {
   final String name;

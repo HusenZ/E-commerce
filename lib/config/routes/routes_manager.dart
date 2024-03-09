@@ -1,4 +1,5 @@
 import 'package:daprot_v1/features/screens/home_screen.dart';
+import 'package:daprot_v1/features/screens/procut_details_screen.dart';
 import 'package:flutter/material.dart';
 
 class Routes {
@@ -9,23 +10,12 @@ class Routes {
   static const String otpLoginRoute = '/otpLogin';
   static const String setProfileRoute = '/profilePhoto';
   static const String homeRoute = '/home';
-  static const String foodCourtScreen = '/foodCourtScreen';
-  static const String menuPage = '/menuPage';
-  static const String blankPage = '/blankPage';
-  static const String qrPage = '/qrPage';
-  static const String qrResult = '/qrResult';
-  static const String restaurentReviews = '/restreview';
-  static const String ratingPage = '/rating';
-  static const String reviewsPage = '/reviews';
-  static const String searchPage = '/search';
-  static const String locationAccessPage = '/locationAccess';
-  static const String customerReviewsPage = '/customerReviews';
-  static const String updateUserScreen = '/updateUser';
-  static const String cartscreen = '/cartscreen';
+  static const String productRoute = '/product';
 }
 
 Map<String, WidgetBuilder> get routes {
   return <String, WidgetBuilder>{
-    Routes.homeRoute: (context) => const HomeScreen()
+    Routes.homeRoute: (context) => const HomeScreen(),
+    // Routes.productRoute: (context) => const ProductScreen(),
   };
 }
