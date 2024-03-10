@@ -22,7 +22,7 @@ class _MyAppState extends State<MyApp> {
       builder: (context, orientation, deviceType) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          initialRoute: Routes.homeRoute,
+          initialRoute: Routes.splashRoute,
           routes: routes,
           theme: getApplicationTheme(),
         );

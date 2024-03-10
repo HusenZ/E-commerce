@@ -1,5 +1,8 @@
+import 'package:daprot_v1/features/screens/auth_screen/login_screen.dart';
+import 'package:daprot_v1/features/screens/auth_screen/otp_screen.dart';
+import 'package:daprot_v1/features/screens/auth_screen/set_profile_screen.dart';
 import 'package:daprot_v1/features/screens/home_screen.dart';
-import 'package:daprot_v1/features/screens/procut_details_screen.dart';
+import 'package:daprot_v1/features/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 class Routes {
@@ -15,7 +18,10 @@ class Routes {
 
 Map<String, WidgetBuilder> get routes {
   return <String, WidgetBuilder>{
+    Routes.splashRoute: (context) => const SplashScreen(),
+    Routes.authRoute: (context) => const LoginScreen(),
     Routes.homeRoute: (context) => const HomeScreen(),
-    // Routes.productRoute: (context) => const ProductScreen(),
+    Routes.otpRoute: (context) => const OtpScreen(),
+    Routes.setProfileRoute: (context) => const SetProfileScreen(),
   };
 }

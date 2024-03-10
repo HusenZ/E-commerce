@@ -34,7 +34,7 @@ class BannerAds extends StatelessWidget {
 
       //Slider Container properties
       options: CarouselOptions(
-        height: 12.h,
+        height: 20.h,
         enlargeCenterPage: true,
         autoPlay: true,
         aspectRatio: 16 / 9,
@@ -49,16 +49,14 @@ class BannerAds extends StatelessWidget {
   Material displayAd(String url) {
     return Material(
       elevation: 4.0,
+      borderRadius: BorderRadius.circular(8.sp),
       child: Container(
         margin: const EdgeInsets.all(6.0),
         height: 5.h,
         width: 86.w,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.h),
-        ),
         child: Image.network(
           url,
-          fit: BoxFit.fill,
+          fit: BoxFit.cover,
         ),
       ),
     );

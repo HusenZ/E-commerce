@@ -3,6 +3,7 @@ import 'package:daprot_v1/data/product.dart';
 import 'package:daprot_v1/features/screens/procut_details_screen.dart';
 import 'package:daprot_v1/features/widgets/home_widgets/product_card.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 class DisplayProduct extends StatelessWidget {
   final String selectedOption;
@@ -22,15 +23,12 @@ class DisplayProduct extends StatelessWidget {
                 selectedOption.toLowerCase())
             .toList();
 
-    // Debug print to check the filtered products
-    print("Filtered Products: $filteredProducts");
-    filteredProducts.forEach((product) {
-      print("Name: ${product.name}, Category: ${product.category}");
-    });
     return SliverList.builder(
       itemCount: filteredProducts.length,
       itemBuilder: (context, index) {
         return ProductCard(
+          height: 30.h,
+          width: 90.w,
           product: filteredProducts[index],
           onTap: () {
             Navigator.of(context).push(

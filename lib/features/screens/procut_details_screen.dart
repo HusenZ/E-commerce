@@ -46,7 +46,7 @@ class ProductScreen extends StatelessWidget {
                     "Shop name and address",
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
-                  RowOfProduct(),
+                  const RowOfProduct(),
                 ],
               ),
             ),

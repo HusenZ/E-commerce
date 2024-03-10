@@ -1,6 +1,10 @@
 import 'package:daprot_v1/config/theme/colors_manager.dart';
+import 'package:daprot_v1/features/screens/cart_screen.dart';
+import 'package:daprot_v1/features/screens/profile_screen.dart';
+import 'package:daprot_v1/features/screens/shops_screen.dart';
 import 'package:daprot_v1/features/widgets/home_widgets/category_display.dart';
 import 'package:daprot_v1/features/widgets/home_widgets/location_widget.dart';
+import 'package:daprot_v1/features/widgets/home_widgets/terding_section.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -15,7 +19,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String selectedOption = "All";
+  int _selectedIndex = 0;
 
+  /*Filter section */
   Widget _buildFilterSection(double screenWidth) {
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -64,6 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  /*Filter  */
   Widget _buildFilterOption(
       BuildContext context,
       String text,
@@ -132,114 +139,173 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            elevation: 0,
-            shape: ContinuousRectangleBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(40.sp),
-                bottomRight: Radius.circular(40.sp),
-              ),
+  /*Home section */
+  CustomScrollView displayHomeScreen(BuildContext context) {
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          expandedHeight: 20.h,
+          floating: false,
+          pinned: true,
+          flexibleSpace: FlexibleSpaceBar(
+            title: Text(
+              "\"Shop in your city\"",
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    fontSize: 12.sp,
+                    color: ColorsManager.blackColor,
+                  ),
             ),
-            expandedHeight: 15.h,
-            floating: true,
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              title: Text(
-                "\"Shop in your city\"",
-                style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                      fontSize: 11.sp,
-                      color: ColorsManager.whiteColor,
-                    ),
+            expandedTitleScale: 1,
+            //background
+            background: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
               ),
-              expandedTitleScale: 1,
-              //background
-              background: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(top: 8.0, left: 8.0),
-                      child: LocationWidget(),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: TextField(
-                          enabled: true,
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.white),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10.sp),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(top: 8.0, left: 8.0),
+                    child: LocationWidget(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: TextField(
+                        enabled: true,
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.black),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10.sp),
+                            ),
+                          ),
+                          prefixIcon: const Icon(
+                            Icons.search,
+                            color: ColorsManager.greyColor,
+                          ),
+                          suffixIcon: InkWell(
+                            onTap: () {},
+                            child: Container(
+                              margin: EdgeInsets.all(1.w),
+                              decoration: BoxDecoration(
+                                color: ColorsManager.whiteColor,
+                                borderRadius: BorderRadius.circular(9),
+                              ),
+                              child: const Icon(
+                                Icons.filter_list,
+                                color: Color.fromARGB(255, 19, 25, 61),
                               ),
                             ),
-                            prefixIcon: const Icon(
-                              Icons.search,
-                              color: ColorsManager.whiteColor,
-                            ),
-                            suffixIcon: InkWell(
-                              onTap: () {},
-                              child: Container(
-                                margin: EdgeInsets.all(1.w),
-                                decoration: BoxDecoration(
-                                  color: ColorsManager.whiteColor,
-                                  borderRadius: BorderRadius.circular(9),
-                                ),
-                                child: const Icon(
-                                  Icons.filter_list,
-                                  color: ColorsManager.primaryColor,
-                                ),
-                              ),
-                            ),
-                            contentPadding: EdgeInsets.all(1.w),
-                            border: InputBorder.none,
-                            hintText: "Search Here",
-                            hintStyle: TextStyle(
-                              fontSize: 12.sp,
-                              color: ColorsManager.whiteColor,
-                            ),
+                          ),
+                          contentPadding: EdgeInsets.all(1.w),
+                          border: InputBorder.none,
+                          hintText: "Search Here",
+                          hintStyle: TextStyle(
+                            fontSize: 12.sp,
+                            color: ColorsManager.greyColor,
                           ),
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              collapseMode: CollapseMode.parallax,
-              centerTitle: true,
-              titlePadding: const EdgeInsets.all(8.0),
             ),
+            collapseMode: CollapseMode.parallax,
             centerTitle: true,
+            titlePadding: const EdgeInsets.all(8.0),
           ),
-          const SliverPadding(
-            padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-            sliver: SliverToBoxAdapter(
-              child: BannerAds(),
+          centerTitle: true,
+        ),
+        /*BANNER ADS*/
+        const SliverPadding(
+          padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+          sliver: SliverToBoxAdapter(
+            child: BannerAds(),
+          ),
+        ),
+        /*TREDING PRODUCTS*/
+        const SliverPadding(
+          padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+          sliver: TredingProducts(),
+        ),
+        /*FILTER SECTION */
+        SliverAppBar(
+          backgroundColor: ColorsManager.whiteColor,
+          elevation: 2,
+          toolbarHeight: 2.h,
+          pinned: true,
+          flexibleSpace: FlexibleSpaceBar(
+            background: _buildFilterSection(MediaQuery.of(context).size.width),
+          ),
+        ),
+        DisplayProduct(
+          selectedOption: selectedOption,
+        ),
+      ],
+    );
+  }
+
+  final List<Widget> _pages = [
+    const HomeScreen(),
+    const ShopsScreen(),
+    const CartScreen(),
+    const ProfileScreen(),
+  ];
+
+  // Handle bottom navigation item selection
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _selectedIndex == 0
+          ? displayHomeScreen(context)
+          : _pages[_selectedIndex],
+      /*BOTTOM NAVIGATION BAR */
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              color: Color.fromARGB(255, 25, 33, 78),
             ),
+            label: 'Home',
           ),
-          SliverAppBar(
-            backgroundColor: ColorsManager.whiteColor,
-            elevation: 2,
-            toolbarHeight: 2.h,
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              background:
-                  _buildFilterSection(MediaQuery.of(context).size.width),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.shop,
+              color: Color.fromARGB(255, 19, 25, 61),
             ),
+            label: 'Shops',
           ),
-          DisplayProduct(
-            selectedOption: selectedOption,
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.shopping_cart,
+              color: Color.fromARGB(255, 19, 25, 61),
+            ),
+            label: 'Cart',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.person,
+              color: Color.fromARGB(255, 19, 25, 61),
+            ),
+            label: 'Profile',
           ),
         ],
+        currentIndex: _selectedIndex, // Set the current index
+        selectedItemColor: const Color.fromARGB(
+            255, 25, 14, 241), // Customize selected item color
+        onTap: _onItemTapped, // Handle item tap
       ),
     );
   }
