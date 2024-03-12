@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 class ColorsManager {
   static const Color blackColor = Colors.black;
   static const Color transparentColor = Colors.transparent;
-  static const Color primaryColor = Color.fromARGB(255, 30, 9, 220);
-  static const Color secondaryColor = Color.fromRGBO(92, 87, 236, 1);
+  static const Color primaryColor = Color.fromARGB(255, 4, 40, 243);
+  static const Color secondaryColor = Color.fromRGBO(55, 86, 197, 0.938);
   static const Color accentColor = Color.fromARGB(255, 3, 224, 244);
-  static const Color greyColor = Color.fromRGBO(251, 118, 118, 1);
+  static const Color greyColor = Color.fromRGBO(198, 194, 194, 0.578);
   static const Color textColor = Color(0xFF333333);
   static const Color whiteColor = Color(0xFFFFFFFF);
   static const Color darkPrimaryColor = Color.fromRGBO(80, 80, 29, 1);

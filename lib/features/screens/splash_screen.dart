@@ -1,8 +1,10 @@
+import 'package:daprot_v1/config/constants/lottie_img.dart';
 import 'package:daprot_v1/config/routes/routes_manager.dart';
 import 'package:daprot_v1/config/theme/colors_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -14,8 +16,6 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
-  bool _isAnimationPlaying = true;
-
   @override
   void initState() {
     super.initState();
@@ -24,8 +24,17 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future navigation() {
-    return Future.delayed(const Duration(seconds: 6), () {
-      Navigator.pushReplacementNamed(context, Routes.authRoute);
+    return Future.delayed(const Duration(seconds: 6), () async {
+      final preferences = await SharedPreferences.getInstance();
+      final bool isAuthenticated =
+          preferences.getBool('isAuthenticated') ?? false;
+      print(
+          "------------------preferences = ${preferences.getBool("isAuthenticated")}");
+      if (isAuthenticated) {
+        Navigator.pushReplacementNamed(context, Routes.homeRoute);
+      } else {
+        Navigator.pushReplacementNamed(context, Routes.authRoute);
+      }
     });
   }
 
@@ -52,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Flexible(
+            const Flexible(
               flex: 3,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -70,7 +79,7 @@ class _SplashScreenState extends State<SplashScreen>
                   //   repeat: false,
                   //   reverse: false,
                   // ),
-                  CopyRights(isAnimationPlaying: _isAnimationPlaying),
+                  CopyRights(),
                 ],
               ),
             ),
@@ -80,7 +89,7 @@ class _SplashScreenState extends State<SplashScreen>
                 alignment: Alignment.bottomCenter,
                 child: SizedBox(
                   child: Lottie.asset(
-                    LottieImages.splashScreenBottom,
+                    AppLottie.splashScreenBottom,
                     width: double.infinity,
                   ),
                 ),
@@ -93,33 +102,22 @@ class _SplashScreenState extends State<SplashScreen>
   }
 }
 
-class LottieImages {
-  static const splashScreenBottom = 'assets/lottie/splashScreenBottom.json';
-  static const logo = '';
-}
-
 class CopyRights extends StatelessWidget {
   const CopyRights({
     super.key,
-    required bool isAnimationPlaying,
-  }) : _isAnimationPlaying = isAnimationPlaying;
-
-  final bool _isAnimationPlaying;
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(right: 4.5.sp),
-      child: !_isAnimationPlaying
-          ? const Text(
-              '© 2024 DAPROT, Inc.',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            )
-          : const SizedBox(),
-    );
+        padding: EdgeInsets.only(right: 4.5.sp),
+        child: const Text(
+          '© 2024 DAPROT, Inc.',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ));
   }
 }

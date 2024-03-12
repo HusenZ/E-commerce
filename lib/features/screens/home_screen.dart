@@ -185,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           prefixIcon: const Icon(
                             Icons.search,
-                            color: ColorsManager.greyColor,
+                            color: Color.fromARGB(255, 151, 147, 147),
                           ),
                           suffixIcon: InkWell(
                             onTap: () {},
@@ -206,7 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           hintText: "Search Here",
                           hintStyle: TextStyle(
                             fontSize: 12.sp,
-                            color: ColorsManager.greyColor,
+                            color: const Color.fromARGB(255, 151, 147, 147),
                           ),
                         ),
                       ),

@@ -14,6 +14,10 @@ class LocationWidget extends StatefulWidget {
 class _LocationWidgetState extends State<LocationWidget> {
   // Initial Selected Value
   String dropdownvalue = 'Current';
+  @override
+  void initState() {
+    super.initState();
+  }
 
   // List of items in our dropdown menu
   var items = [
