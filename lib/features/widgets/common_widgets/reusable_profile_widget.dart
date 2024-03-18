@@ -3,8 +3,8 @@ import 'package:daprot_v1/features/widgets/common_widgets/single_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-class ReusableCard extends StatelessWidget {
-  const ReusableCard({
+class DcardOfProfile extends StatelessWidget {
+  const DcardOfProfile({
     super.key,
     required this.title,
     required this.title2,
@@ -34,10 +34,10 @@ class ReusableCard extends StatelessWidget {
         children: [
           InkWell(
               onTap: onPressed1,
-              child: SingleWidget(title: title, image: image1)),
+              child: DsingleChildCard(title: title, image: image1)),
           InkWell(
               onTap: onPressed2,
-              child: SingleWidget(title: title2, image: image2)),
+              child: DsingleChildCard(title: title2, image: image2)),
         ],
       ),
     );

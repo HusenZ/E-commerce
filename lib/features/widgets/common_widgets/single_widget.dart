@@ -2,8 +2,8 @@ import 'package:daprot_v1/config/theme/colors_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-class SingleWidget extends StatelessWidget {
-  const SingleWidget({
+class DsingleChildCard extends StatelessWidget {
+  const DsingleChildCard({
     super.key,
     required this.title,
     required this.image,

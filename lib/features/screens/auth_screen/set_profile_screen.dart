@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:daprot_v1/bloc/auth_bloc/auth_bloc.dart';
 import 'package:daprot_v1/bloc/auth_bloc/auth_events.dart';
 import 'package:daprot_v1/bloc/auth_bloc/auth_state.dart';
@@ -7,6 +5,7 @@ import 'package:daprot_v1/config/theme/colors_manager.dart';
 import 'package:daprot_v1/features/widgets/common_widgets/custom_text_field.dart';
 import 'package:daprot_v1/features/widgets/common_widgets/delevated_button.dart';
 import 'package:daprot_v1/features/widgets/common_widgets/loading_button.dart';
+import 'package:daprot_v1/features/widgets/common_widgets/profile_photo_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -162,41 +161,6 @@ class SetProfileScreenState extends State<SetProfileScreen> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class ProfilePhoto extends StatelessWidget {
-  const ProfilePhoto({
-    super.key,
-    required XFile? profileImage,
-  }) : _profileImage = profileImage;
-
-  final XFile? _profileImage;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 150,
-      height: 150,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.grey[300],
-      ),
-      child: _profileImage == null
-          ? Icon(
-              Icons.account_circle,
-              size: 150,
-              color: Colors.grey[600],
-            )
-          : ClipOval(
-              child: Image.file(
-                File(_profileImage!.path),
-                width: 150,
-                height: 150,
-                fit: BoxFit.cover,
-              ),
-            ),
     );
   }
 }

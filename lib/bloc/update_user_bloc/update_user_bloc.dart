@@ -20,20 +20,17 @@ class UserUpdateBloc extends Bloc<UserUpdateEvent, UserUpdateState> {
         String profileImgURL = event.newProfileImagePath;
         print("In bloc");
         print(event.isProfileUpdated);
-        FirebaseStorage firebaseStorage = FirebaseStorage.instance;
         FirebaseFirestore firestore = FirebaseFirestore.instance;
         if (event.isProfileUpdated) {
-          String fileName = '${event.userId}_profile_pic.jpg';
-          Reference ref = firebaseStorage.ref();
-          Reference refDirProfileImg = ref.child('cust-images');
-          Reference refImage = refDirProfileImg.child(fileName);
+          Reference refImage =
+              FirebaseStorage.instance.ref('user_profile/${event.userId}.jpg');
 
           await refImage.putFile(File(event.newProfileImagePath));
           profileImgURL = await refImage.getDownloadURL();
         } else {
           await firestore.collection('Users').doc(event.userId).update({
-            'fullName': event.name,
-            'profilePhoto': profileImgURL,
+            'name': event.name,
+            'imgUrl': profileImgURL,
             'email': event.email,
             // 'bio': event.bio,
           });

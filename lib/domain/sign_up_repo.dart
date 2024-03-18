@@ -7,8 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUpApi {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  static final FirebaseStorage _storage = FirebaseStorage.instance;
-
   static Future<bool> addUser({
     required XFile profile,
     required String name,
@@ -20,7 +18,7 @@ class SignUpApi {
 
       final uid = auth.currentUser!.uid;
 
-      Reference ref = FirebaseStorage.instance.ref('gym_logo/$uid.jpg');
+      Reference ref = FirebaseStorage.instance.ref('user_profile/$uid.jpg');
       await ref.putFile(File(profile.path));
       String imgUrl = await ref.getDownloadURL();
 
@@ -42,23 +40,6 @@ class SignUpApi {
 
       // Return false to indicate failure
       return false;
-    }
-  }
-
-  static Future<String> uploadGymLogo(String profileImg, String name) async {
-    String uniqueFileName = "$name-${DateTime.now()}";
-    Reference ref = _storage.ref();
-    Reference refDirProfileImg = ref.child('profile');
-    Reference refImage = refDirProfileImg.child(uniqueFileName);
-
-    try {
-      await refImage.putFile(File(profileImg));
-      String downloadURL = await refImage.getDownloadURL();
-      print('imageUrl$downloadURL');
-      return downloadURL;
-    } catch (e) {
-      print('Error uploading profile image: $e');
-      return 'https://firebasestorage.googleapis.com/v0/b/gymify-7dc64.appspot.com/o/profileImages%2Fman.png?alt=media&token=f4174a50-d9a2-4679-8545-12fb1bd454ec'; // Handle the error appropriately in your application
     }
   }
 }

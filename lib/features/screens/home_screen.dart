@@ -1,10 +1,12 @@
 import 'package:daprot_v1/config/theme/colors_manager.dart';
+import 'package:daprot_v1/data/product.dart';
+import 'package:daprot_v1/domain/shop_data_repo.dart';
 import 'package:daprot_v1/features/screens/cart_screen.dart';
+import 'package:daprot_v1/features/screens/procut_details_screen.dart';
 import 'package:daprot_v1/features/screens/profile_screen.dart';
 import 'package:daprot_v1/features/screens/shops_screen.dart';
-import 'package:daprot_v1/features/widgets/home_widgets/category_display.dart';
 import 'package:daprot_v1/features/widgets/home_widgets/location_widget.dart';
-import 'package:daprot_v1/features/widgets/home_widgets/terding_section.dart';
+import 'package:daprot_v1/features/widgets/home_widgets/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -20,6 +22,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String selectedOption = "All";
   int _selectedIndex = 0;
+  ProductStream repo = ProductStream();
 
   /*Filter section */
   Widget _buildFilterSection(double screenWidth) {
@@ -140,117 +143,166 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   /*Home section */
-  CustomScrollView displayHomeScreen(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          elevation: 0,
-          backgroundColor: Colors.white,
-          expandedHeight: 20.h,
-          floating: false,
-          pinned: true,
-          flexibleSpace: FlexibleSpaceBar(
-            title: Text(
-              "\"Shop in your city\"",
-              style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                    fontSize: 12.sp,
-                    color: ColorsManager.blackColor,
+  Widget displayHomeScreen(BuildContext context) {
+    return StreamBuilder(
+        stream: repo.getProductStream(),
+        builder: (context, snapshot) {
+          final product = snapshot.data;
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator(); // Show loading indicator
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}'); // Show error message
+          }
+          if (product == null) {
+            return const Text("no prodcuts available");
+          }
+          return CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                elevation: 0,
+                backgroundColor: Colors.white,
+                expandedHeight: 20.h,
+                floating: false,
+                pinned: true,
+                flexibleSpace: FlexibleSpaceBar(
+                  title: Text(
+                    "\"Shop in your city\"",
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          fontSize: 12.sp,
+                          color: ColorsManager.blackColor,
+                        ),
                   ),
-            ),
-            expandedTitleScale: 1,
-            //background
-            background: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 8.0, left: 8.0),
-                    child: LocationWidget(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: TextField(
-                        enabled: true,
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.black),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10.sp),
-                            ),
-                          ),
-                          prefixIcon: const Icon(
-                            Icons.search,
-                            color: Color.fromARGB(255, 151, 147, 147),
-                          ),
-                          suffixIcon: InkWell(
-                            onTap: () {},
-                            child: Container(
-                              margin: EdgeInsets.all(1.w),
-                              decoration: BoxDecoration(
-                                color: ColorsManager.whiteColor,
-                                borderRadius: BorderRadius.circular(9),
+                  expandedTitleScale: 1,
+                  //background
+                  background: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(top: 8.0, left: 8.0),
+                          child: LocationWidget(),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: TextField(
+                              enabled: true,
+                              decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: Colors.black),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10.sp),
+                                  ),
+                                ),
+                                prefixIcon: const Icon(
+                                  Icons.search,
+                                  color: Color.fromARGB(255, 151, 147, 147),
+                                ),
+                                suffixIcon: InkWell(
+                                  onTap: () {},
+                                  child: Container(
+                                    margin: EdgeInsets.all(1.w),
+                                    decoration: BoxDecoration(
+                                      color: ColorsManager.whiteColor,
+                                      borderRadius: BorderRadius.circular(9),
+                                    ),
+                                    child: const Icon(
+                                      Icons.filter_list,
+                                      color: Color.fromARGB(255, 19, 25, 61),
+                                    ),
+                                  ),
+                                ),
+                                contentPadding: EdgeInsets.all(1.w),
+                                border: InputBorder.none,
+                                hintText: "Search Here",
+                                hintStyle: TextStyle(
+                                  fontSize: 12.sp,
+                                  color:
+                                      const Color.fromARGB(255, 151, 147, 147),
+                                ),
                               ),
-                              child: const Icon(
-                                Icons.filter_list,
-                                color: Color.fromARGB(255, 19, 25, 61),
-                              ),
                             ),
-                          ),
-                          contentPadding: EdgeInsets.all(1.w),
-                          border: InputBorder.none,
-                          hintText: "Search Here",
-                          hintStyle: TextStyle(
-                            fontSize: 12.sp,
-                            color: const Color.fromARGB(255, 151, 147, 147),
                           ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
-                ],
+                  collapseMode: CollapseMode.parallax,
+                  centerTitle: true,
+                  titlePadding: const EdgeInsets.all(8.0),
+                ),
+                centerTitle: true,
               ),
-            ),
-            collapseMode: CollapseMode.parallax,
-            centerTitle: true,
-            titlePadding: const EdgeInsets.all(8.0),
-          ),
-          centerTitle: true,
-        ),
-        /*BANNER ADS*/
-        const SliverPadding(
-          padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-          sliver: SliverToBoxAdapter(
-            child: BannerAds(),
-          ),
-        ),
-        /*TREDING PRODUCTS*/
-        const SliverPadding(
-          padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-          sliver: TredingProducts(),
-        ),
-        /*FILTER SECTION */
-        SliverAppBar(
-          backgroundColor: ColorsManager.whiteColor,
-          elevation: 2,
-          toolbarHeight: 2.h,
-          pinned: true,
-          flexibleSpace: FlexibleSpaceBar(
-            background: _buildFilterSection(MediaQuery.of(context).size.width),
-          ),
-        ),
-        DisplayProduct(
-          selectedOption: selectedOption,
-        ),
-      ],
-    );
+              /*BANNER ADS*/
+              const SliverPadding(
+                padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+                sliver: SliverToBoxAdapter(
+                  child: BannerAds(),
+                ),
+              ),
+              /*TREDING PRODUCTS*/
+              // const SliverPadding(
+              //   padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+              //   sliver: TredingProducts(),
+              // ),
+              /*FILTER SECTION */
+              SliverAppBar(
+                backgroundColor: ColorsManager.whiteColor,
+                elevation: 2,
+                toolbarHeight: 2.h,
+                pinned: true,
+                flexibleSpace: FlexibleSpaceBar(
+                  background:
+                      _buildFilterSection(MediaQuery.of(context).size.width),
+                ),
+              ),
+              // DisplayProduct(
+              //   selectedOption: selectedOption,
+              // ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                    childCount: product.docs.length, (context, index) {
+                  return ProductCard(
+                    product: Product(
+                        name: product.docs[index]['name'],
+                        price: product.docs[index]['price'],
+                        details: product.docs[index]['description'],
+                        imageUrl: product.docs[index]['selectedPhotos'].first,
+                        shopId: product.docs[index]['shopId'],
+                        category: Category.men),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProductScreen(
+                            product: Product(
+                                name: product.docs[index]['name'],
+                                price: product.docs[index]['price'],
+                                details: product.docs[index]['description'],
+                                imageUrl:
+                                    product.docs[index]['selectedPhotos'].first,
+                                shopId: product.docs[index]['shopId'],
+                                category: Category.men),
+                          ),
+                        ),
+                      );
+                    },
+                    height: 30.h,
+                    width: 2.h,
+                  );
+                }),
+              ),
+            ],
+          );
+        });
   }
 
-  final List<Widget> _pages = [
+  final List _pages = [
     const HomeScreen(),
     const ShopsScreen(),
     const CartScreen(),

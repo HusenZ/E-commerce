@@ -5,7 +5,7 @@ import 'package:daprot_v1/config/constants/app_images.dart';
 import 'package:daprot_v1/config/theme/colors_manager.dart';
 import 'package:daprot_v1/domain/model/user_model.dart';
 import 'package:daprot_v1/domain/user_data_repo.dart';
-import 'package:daprot_v1/features/widgets/common_widgets/reusable_profile_widget.dart';
+import 'package:daprot_v1/features/screens/update_profile_screen.dart';
 import 'package:daprot_v1/features/widgets/common_widgets/single_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -225,9 +225,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             horizontal: 5.w, vertical: 1.h),
                                         child: Text(
                                           "365 orders in 2024",
-                                          style: TextStyle(
-                                              fontSize: 14.sp,
-                                              color: ColorsManager.greyColor),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .copyWith(
+                                                  fontSize: 14.sp,
+                                                  color:
+                                                      ColorsManager.greyColor),
                                         ),
                                       ),
                                     ],
@@ -250,59 +254,58 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             print('UserName: ${user!.name}');
                             print('userPhone: ${user!.phNo}');
                             print('userEmail: ${user!.email}');
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => UpdateProfileScreen(
-                            //       userId: widget.userId,
-                            //       profileImg: user!.profilePhoto,
-                            //       userPhone: user!.phNo,
-                            //       userEmail: user!.email,
-                            //       userName: user!.name,
-                            //     ),
-                            //   ),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UpdateProfileScreen(
+                                  userId: user!.uid,
+                                  profileImg: user!.imgUrl,
+                                  userPhone: user!.phNo,
+                                  userEmail: user!.email,
+                                  userName: user!.name,
+                                ),
+                              ),
+                            );
                           },
-                          child: const SingleWidget(
+                          child: const DsingleChildCard(
                               title: "Personal Info",
                               image: AppImages.profileLogo),
                         ),
                         SizedBox(
                           height: 1.h,
                         ),
-                        ReusableCard(
-                          title: "Cart",
-                          title2: "My orders",
-                          image1: AppImages.cartLogo,
-                          image2: AppImages.myOrdersLogo,
-                          onPressed1: () {
+                        InkWell(
+                          onTap: () {
                             // Navigator.push(
                             //     context,
                             //     MaterialPageRoute(
                             //         builder: (context) => const CartScreen()));
                           },
-                          onPressed2: () {
-                            // Navigator.of(context)
-                            //     .push(MaterialPageRoute(builder: (_) {
-                            //   return OrderHistoryScreen();
-                            // }));
-                          },
+                          child: const DsingleChildCard(
+                            title: "My orders",
+                            image: AppImages.myOrdersLogo,
+                          ),
                         ),
-                        ReusableCard(
+                        SizedBox(
+                          height: 1.h,
+                        ),
+                        const DsingleChildCard(
+                          title: "Customer Support",
+                          image: AppImages.supportLogo,
+                        ),
+                        SizedBox(
+                          height: 1.h,
+                        ),
+                        const DsingleChildCard(
                           title: "My Rewards",
-                          title2: "Payments",
-                          image1: AppImages.myRewardsLogo,
-                          image2: AppImages.paymentsLogo,
-                          onPressed1: () {},
-                          onPressed2: () {},
+                          image: AppImages.myRewardsLogo,
                         ),
-                        ReusableCard(
-                          title: "Support 24/7",
-                          title2: "Settings",
-                          image1: AppImages.supportLogo,
-                          image2: AppImages.settingsLogo,
-                          onPressed1: () {},
-                          onPressed2: () {},
+                        SizedBox(
+                          height: 1.h,
+                        ),
+                        const DsingleChildCard(
+                          title: "Payments",
+                          image: AppImages.paymentsLogo,
                         ),
                         SizedBox(
                           height: 1.h,
@@ -312,7 +315,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               _showLogoutDialog(
                                   context, user!.imgUrl, user!.name);
                             },
-                            child: const SingleWidget(
+                            child: const DsingleChildCard(
                                 title: "Log Out", image: AppImages.logoutLogo))
                       ],
                     ))
