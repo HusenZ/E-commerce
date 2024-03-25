@@ -1,5 +1,6 @@
 import 'package:daprot_v1/bloc/auth_bloc/auth_bloc.dart';
 import 'package:daprot_v1/bloc/cart_bloc/cart_bloc.dart';
+import 'package:daprot_v1/bloc/location_bloc/user_location_bloc.dart';
 import 'package:daprot_v1/bloc/update_user_bloc/update_user_bloc.dart';
 import 'package:daprot_v1/config/app.dart';
 import 'package:daprot_v1/firebase_options.dart';
@@ -25,6 +26,7 @@ void main() async {
     providers: [
       BlocProvider(create: (context) => AppBloc(preferences)),
       BlocProvider(create: (context) => UserUpdateBloc()),
+      BlocProvider(create: (context) => LocationBloc()),
       BlocProvider(create: (context) => CartBloc()),
     ],
     child: MyApp(),

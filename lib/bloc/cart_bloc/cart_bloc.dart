@@ -37,6 +37,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         'category': event.product.category.name,
         'image': event.product.imageUrl,
         'cartItemId': itemId,
+        'productId': event.product.productId,
       });
       emit(CartAddSuccessState());
       print("Added successfully");
@@ -54,7 +55,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           .collection('Users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection('Cart')
-          .doc(event.cartItemId)
+          .doc(event.productId)
           .delete();
       emit(CartRemoveSuccessState()); // Update UI
     } catch (error) {

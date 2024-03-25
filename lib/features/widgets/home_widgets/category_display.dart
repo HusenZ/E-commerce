@@ -36,25 +36,28 @@ class DisplayProduct extends StatelessWidget {
             itemBuilder: (context, index) {
               return ProductCard(
                 product: Product(
-                    name: product.docs[index]['name'],
-                    price: product.docs[index]['price'],
-                    details: product.docs[index]['description'],
-                    imageUrl: product.docs[index]['selectedPhotos'].first,
-                    shopId: product.docs[index]['shopId'],
-                    category: Category.men),
+                  name: product.docs[index]['name'],
+                  price: product.docs[index]['price'],
+                  details: product.docs[index]['description'],
+                  imageUrl: product.docs[index]['selectedPhotos'].first,
+                  shopId: product.docs[index]['shopId'],
+                  productId: product.docs[index]['productId'],
+                  category: Category.men,
+                ),
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => ProductScreen(
                         product: Product(
-                            name: product.docs[index]['name'],
-                            price: product.docs[index]['price'],
-                            details: product.docs[index]['description'],
-                            imageUrl:
-                                product.docs[index]['selectedPhotos'].first,
-                            shopId: product.docs[index]['shopId'],
-                            category: Category.men),
+                          name: product.docs[index]['name'],
+                          price: product.docs[index]['price'],
+                          details: product.docs[index]['description'],
+                          imageUrl: product.docs[index]['selectedPhotos'].first,
+                          shopId: product.docs[index]['shopId'],
+                          productId: product.docs[index]['productId'],
+                          category: Category.men,
+                        ),
                       ),
                     ),
                   );

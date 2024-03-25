@@ -8,6 +8,7 @@ import 'package:daprot_v1/features/screens/shops_screen.dart';
 import 'package:daprot_v1/features/widgets/home_widgets/location_widget.dart';
 import 'package:daprot_v1/features/widgets/home_widgets/product_card.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:daprot_v1/features/widgets/home_widgets/banner_ads.dart';
@@ -149,7 +150,16 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, snapshot) {
           final product = snapshot.data;
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator(); // Show loading indicator
+            return Scaffold(
+                appBar: AppBar(
+                  title: const Text("My Orders"),
+                ),
+                body: ListView.builder(
+                  itemBuilder: (context, index) => Shimmer.fromColors(
+                      baseColor: Colors.grey,
+                      highlightColor: Colors.white,
+                      child: Container()),
+                ));
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}'); // Show error message
           }
@@ -274,6 +284,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         details: product.docs[index]['description'],
                         imageUrl: product.docs[index]['selectedPhotos'].first,
                         shopId: product.docs[index]['shopId'],
+                        productId: product.docs[index]['productId'],
                         category: Category.men),
                     onTap: () {
                       Navigator.push(
@@ -287,6 +298,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 imageUrl:
                                     product.docs[index]['selectedPhotos'].first,
                                 shopId: product.docs[index]['shopId'],
+                                productId: product.docs[index]['productId'],
                                 category: Category.men),
                           ),
                         ),
@@ -324,39 +336,40 @@ class _HomeScreenState extends State<HomeScreen> {
           : _pages[_selectedIndex],
       /*BOTTOM NAVIGATION BAR */
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: ColorsManager.lightGreyColor,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home,
-              color: Color.fromARGB(255, 25, 33, 78),
+              color: ColorsManager.primaryColor,
             ),
             label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.shop,
-              color: Color.fromARGB(255, 19, 25, 61),
+              color: ColorsManager.primaryColor,
             ),
             label: 'Shops',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.shopping_cart,
-              color: Color.fromARGB(255, 19, 25, 61),
+              color: ColorsManager.primaryColor,
             ),
             label: 'Cart',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.person,
-              color: Color.fromARGB(255, 19, 25, 61),
+              color: ColorsManager.primaryColor,
             ),
             label: 'Profile',
           ),
         ],
         currentIndex: _selectedIndex, // Set the current index
-        selectedItemColor: const Color.fromARGB(
-            255, 25, 14, 241), // Customize selected item color
+        selectedItemColor:
+            ColorsManager.primaryColor, // Customize selected item color
         onTap: _onItemTapped, // Handle item tap
       ),
     );

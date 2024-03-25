@@ -1,8 +1,7 @@
-import 'package:daprot_v1/bloc/cart_bloc/cart_bloc.dart';
 import 'package:daprot_v1/config/theme/colors_manager.dart';
 import 'package:daprot_v1/data/product.dart';
+import 'package:daprot_v1/features/screens/procut_details_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 
 class ProductCard extends StatelessWidget {
@@ -71,18 +70,16 @@ class ProductCard extends StatelessWidget {
                         overflow: TextOverflow.fade,
                       ),
                       ElevatedButton(
-                        onPressed: () {
-                          BlocProvider.of<CartBloc>(context)
-                              .add(AddToCart(product));
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: ColorsManager.primaryColor,
-                          foregroundColor: ColorsManager.whiteColor,
-                        ),
-                        child: const Text("Add To Cart"),
-                      ),
-                      ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProductScreen(
+                                  product: product,
+                                ),
+                              ),
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
                                 const Color.fromARGB(206, 233, 226, 226),

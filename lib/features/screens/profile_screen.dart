@@ -5,6 +5,7 @@ import 'package:daprot_v1/config/constants/app_images.dart';
 import 'package:daprot_v1/config/theme/colors_manager.dart';
 import 'package:daprot_v1/domain/model/user_model.dart';
 import 'package:daprot_v1/domain/user_data_repo.dart';
+import 'package:daprot_v1/features/screens/orders_screen.dart';
 import 'package:daprot_v1/features/screens/update_profile_screen.dart';
 import 'package:daprot_v1/features/widgets/common_widgets/single_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -69,8 +70,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         const Icon(Icons.error),
                   ),
                 ),
-                SizedBox(height: 20),
-                Text(
+                const SizedBox(height: 20),
+                const Text(
                   'Are you sure you want to logout?',
                   textAlign: TextAlign.center,
                 ),
@@ -141,6 +142,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 body: CustomScrollView(
                   slivers: [
                     SliverAppBar(
+                      automaticallyImplyLeading: false,
                       pinned: true,
                       backgroundColor: ColorsManager.whiteColor,
                       expandedHeight: 8.h,
@@ -149,18 +151,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Text(
                           'Profile',
                           style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ),
-                      leading: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 18, 0, 0),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: const CircleAvatar(
-                            backgroundColor: Colors.white,
-                            child: Icon(Icons.arrow_back),
-                          ),
                         ),
                       ),
                     ),
@@ -215,8 +205,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             horizontal: 5.w),
                                         child: Text(
                                           user!.name,
+                                          overflow: TextOverflow.fade,
                                           style: TextStyle(
-                                              fontSize: 24.sp,
+                                              fontSize: 15.sp,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
@@ -281,9 +272,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             //     MaterialPageRoute(
                             //         builder: (context) => const CartScreen()));
                           },
-                          child: const DsingleChildCard(
-                            title: "My orders",
-                            image: AppImages.myOrdersLogo,
+                          child: InkWell(
+                            onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const OrderScreen(),
+                              ),
+                            ),
+                            child: const DsingleChildCard(
+                              title: "My orders",
+                              image: AppImages.myOrdersLogo,
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -292,20 +290,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         const DsingleChildCard(
                           title: "Customer Support",
                           image: AppImages.supportLogo,
-                        ),
-                        SizedBox(
-                          height: 1.h,
-                        ),
-                        const DsingleChildCard(
-                          title: "My Rewards",
-                          image: AppImages.myRewardsLogo,
-                        ),
-                        SizedBox(
-                          height: 1.h,
-                        ),
-                        const DsingleChildCard(
-                          title: "Payments",
-                          image: AppImages.paymentsLogo,
                         ),
                         SizedBox(
                           height: 1.h,

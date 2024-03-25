@@ -11,4 +11,18 @@ class UserOrderRepository {
       print('Error placing order: $e');
     }
   }
+
+  Stream<String?> getOrderStatusStream(String productId) {
+    return FirebaseFirestore.instance
+        .collection('orders')
+        .where('productId', isEqualTo: productId)
+        .snapshots()
+        .map((querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        return querySnapshot.docs.first['orderStatus'] as String?;
+      } else {
+        return null;
+      }
+    });
+  }
 }

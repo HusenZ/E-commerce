@@ -258,6 +258,7 @@ class OtpScreenState extends State<OtpScreen> {
                         phoneNumber: phoneNumber,
                         gymName: '',
                       ));
+                      Navigator.of(context).pushNamed(Routes.homeRoute);
                     },
                   ),
           ],

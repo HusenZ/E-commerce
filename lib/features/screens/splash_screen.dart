@@ -30,11 +30,12 @@ class _SplashScreenState extends State<SplashScreen>
           preferences.getBool('isAuthenticated') ?? false;
       print(
           "------------------preferences = ${preferences.getBool("isAuthenticated")}");
-      if (isAuthenticated) {
-        Navigator.pushReplacementNamed(context, Routes.homeRoute);
-      } else {
-        Navigator.pushReplacementNamed(context, Routes.authRoute);
-      }
+      Navigator.pushReplacementNamed(context, Routes.homeRoute);
+      // if (isAuthenticated) {
+      //   Navigator.pushReplacementNamed(context, Routes.homeRoute);
+      // } else {
+      //   Navigator.pushReplacementNamed(context, Routes.authRoute);
+      // }
     });
   }
 

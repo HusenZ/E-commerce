@@ -9,8 +9,7 @@ ColorScheme kColorScheme = ColorScheme.fromSeed(
 );
 ThemeData getApplicationTheme() {
   return ThemeData(
-    fontFamily: 'AppFonts',
-    fontFamilyFallback: const ['AppFonts'],
+    fontFamily: 'Poppins',
     colorScheme: kColorScheme,
     primaryColor: ColorsManager.primaryColor,
     appBarTheme: const AppBarTheme().copyWith(
