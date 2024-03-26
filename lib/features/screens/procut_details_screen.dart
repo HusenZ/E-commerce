@@ -1,4 +1,5 @@
 import 'package:daprot_v1/bloc/cart_bloc/cart_bloc.dart';
+import 'package:daprot_v1/bloc/wish_list_bloc/wish_list_bloc.dart';
 import 'package:daprot_v1/config/theme/colors_manager.dart';
 import 'package:daprot_v1/data/product.dart';
 import 'package:daprot_v1/domain/check_cart_repo.dart';
@@ -93,7 +94,10 @@ class _ProductScreenState extends State<ProductScreen> {
                                           .add(AddToCart(widget.product));
                                     }),
                           DelevatedButton(
-                            onTap: () {},
+                            onTap: () {
+                              BlocProvider.of<WishlistBloc>(context).add(
+                                  AddProductEvent(product: widget.product));
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
                                   const Color.fromARGB(209, 235, 37, 37),
