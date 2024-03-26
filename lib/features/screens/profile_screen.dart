@@ -5,6 +5,7 @@ import 'package:daprot_v1/config/constants/app_images.dart';
 import 'package:daprot_v1/config/theme/colors_manager.dart';
 import 'package:daprot_v1/domain/model/user_model.dart';
 import 'package:daprot_v1/domain/user_data_repo.dart';
+import 'package:daprot_v1/features/screens/orders_screen.dart';
 import 'package:daprot_v1/features/screens/update_profile_screen.dart';
 import 'package:daprot_v1/features/widgets/common_widgets/single_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -224,7 +225,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 5.w, vertical: 1.h),
                                         child: Text(
-                                          "365 orders in 2024",
+                                          "n orders in year",
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodyMedium!
@@ -275,37 +276,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           height: 1.h,
                         ),
                         InkWell(
-                          onTap: () {
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => const CartScreen()));
-                          },
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const OrderScreen(),
+                            ),
+                          ),
                           child: const DsingleChildCard(
                             title: "My orders",
                             image: AppImages.myOrdersLogo,
                           ),
-                        ),
-                        SizedBox(
-                          height: 1.h,
-                        ),
-                        const DsingleChildCard(
-                          title: "Customer Support",
-                          image: AppImages.supportLogo,
-                        ),
-                        SizedBox(
-                          height: 1.h,
-                        ),
-                        const DsingleChildCard(
-                          title: "My Rewards",
-                          image: AppImages.myRewardsLogo,
-                        ),
-                        SizedBox(
-                          height: 1.h,
-                        ),
-                        const DsingleChildCard(
-                          title: "Payments",
-                          image: AppImages.paymentsLogo,
                         ),
                         SizedBox(
                           height: 1.h,

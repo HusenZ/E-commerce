@@ -16,6 +16,8 @@ class OrderModel {
   String totalPrice;
   String orderStatus;
   DateTime orderDate;
+  final String quantity;
+  final String productId;
   final String shopId;
 
   OrderModel({
@@ -26,6 +28,8 @@ class OrderModel {
     required this.orderStatus,
     required this.orderDate,
     required this.shopId,
+    required this.quantity,
+    required this.productId,
   });
 
   Map<String, dynamic> toMap() {
@@ -37,6 +41,8 @@ class OrderModel {
     result.addAll({'orderItems': orderItems.map((x) => x.toMap()).toList()});
     result.addAll({'totalPrice': totalPrice});
     result.addAll({'orderStatus': orderStatus});
+    result.addAll({'quantity': quantity});
+    result.addAll({'productId': productId});
     result.addAll({'orderDate': orderDate.hour.toString()});
 
     return result;
@@ -52,6 +58,8 @@ class OrderModel {
       totalPrice: map['totalPrice'] ?? 0.0,
       orderStatus: map['orderStatus'] ?? '',
       orderDate: DateTime.fromMillisecondsSinceEpoch(map['orderDate']),
+      quantity: map['quantity'] ?? '1',
+      productId: map['productId'] ?? '',
     );
   }
 
@@ -67,6 +75,8 @@ class OrderModel {
         orderItems = _convertToProductList(snapshot['orderItems']),
         totalPrice = snapshot['totalPrice'],
         orderStatus = snapshot['orderStatus'],
+        quantity = snapshot['quantity'],
+        productId = snapshot['productId'],
         orderDate = (snapshot['orderDate'] as Timestamp).toDate();
 
   static List<OrderItem> _convertToProductList(List<dynamic> products) {

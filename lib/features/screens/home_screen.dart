@@ -274,7 +274,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         details: product.docs[index]['description'],
                         imageUrl: product.docs[index]['selectedPhotos'].first,
                         shopId: product.docs[index]['shopId'],
-                        category: Category.men),
+                        category: Category.men,
+                        productId: product.docs[index]['productId']),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -287,7 +288,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 imageUrl:
                                     product.docs[index]['selectedPhotos'].first,
                                 shopId: product.docs[index]['shopId'],
-                                category: Category.men),
+                                category: Category.men,
+                                productId: product.docs[index]['productId']),
                           ),
                         ),
                       );

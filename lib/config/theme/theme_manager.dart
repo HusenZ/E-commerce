@@ -9,7 +9,7 @@ ColorScheme kColorScheme = ColorScheme.fromSeed(
 );
 ThemeData getApplicationTheme() {
   return ThemeData(
-    fontFamily: 'AppFonts',
+    fontFamily: 'Poppins',
     fontFamilyFallback: const ['AppFonts'],
     colorScheme: kColorScheme,
     primaryColor: ColorsManager.primaryColor,

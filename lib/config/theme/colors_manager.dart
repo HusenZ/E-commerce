@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 class ColorsManager {
   static const Color blackColor = Colors.black;
+  static const Color backgroundColor = Color.fromARGB(216, 247, 242, 255);
+  static Color? lightGreyColor = Colors.grey[400];
   static const Color transparentColor = Colors.transparent;
-  static const Color primaryColor = Color.fromARGB(255, 4, 40, 243);
-  static const Color secondaryColor = Color.fromRGBO(55, 86, 197, 0.938);
+  static const Color primaryColor = Color.fromARGB(232, 3, 115, 244);
+  static const Color secondaryColor = Color.fromRGBO(75, 109, 232, 0.937);
   static const Color accentColor = Color.fromARGB(255, 3, 224, 244);
   static const Color greyColor = Color.fromRGBO(198, 194, 194, 0.578);
   static const Color textColor = Color(0xFF333333);
@@ -19,4 +21,5 @@ class ColorsManager {
   static Color? hintTextColor = Colors.grey[400];
   static const Color lightGrey = Color(0xffeceff4);
   static Color lightOrange = const Color(0xffffe6cc).withOpacity(0.8);
+  static const Color offWhiteColor = Color(0xFFf7f7f7);
 }

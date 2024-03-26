@@ -20,7 +20,8 @@ class StoreView extends StatelessWidget {
     return Scaffold(
       body: StreamBuilder(
         stream: repository.getShopStream(sellerId),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        builder: (BuildContext context,
+            AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const CircularProgressIndicator();
           }
@@ -29,7 +30,7 @@ class StoreView extends StatelessWidget {
             return Text('Error: ${snapshot.error}');
           }
 
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          if (!snapshot.hasData) {
             return const Text('No data available');
           }
           return CustomScrollView(
@@ -37,7 +38,8 @@ class StoreView extends StatelessWidget {
               SliverAppBar(
                 flexibleSpace: FlexibleSpaceBar(
                   background: CachedNetworkImage(
-                    imageUrl: snapshot.data!.docs.first["shopImage"],
+                    imageUrl: snapshot.data!["shopImage"],
+                    fit: BoxFit.cover,
                   ),
                 ),
                 floating: false,
@@ -47,16 +49,17 @@ class StoreView extends StatelessWidget {
                 bottom: PreferredSize(
                   preferredSize: Size.fromHeight(2.h),
                   child: CircleAvatar(
-                    backgroundImage:
-                        NetworkImage(snapshot.data!.docs.first["shopLogo"]),
+                    backgroundImage: NetworkImage(snapshot.data!["shopLogo"]),
+                    backgroundColor: Colors.white,
+                    radius: 25.sp,
                   ),
                 ),
               ),
               BottomTitle(
-                  shopName: snapshot.data!.docs.first["name"],
-                  openTime: snapshot.data!.docs.first["openTime"],
-                  closeTime: snapshot.data!.docs.first["closeTime"],
-                  locaion: snapshot.data!.docs.first["location"]),
+                  shopName: snapshot.data!["name"],
+                  openTime: snapshot.data!["openTime"],
+                  closeTime: snapshot.data!["closeTime"],
+                  locaion: snapshot.data!["location"]),
               StreamBuilder(
                   stream: repository.getProductStream(),
                   builder: (context, snapshot) {
@@ -85,13 +88,15 @@ class StoreView extends StatelessWidget {
                                   MaterialPageRoute(
                                     builder: (context) => ProductScreen(
                                       product: Product(
-                                          name: product['name'],
-                                          price: product['price'],
-                                          details: product['name'],
-                                          imageUrl:
-                                              product['selectedPhotos'].first,
-                                          category: Category.men,
-                                          shopId: product['shopId']),
+                                        name: product['name'],
+                                        price: product['price'],
+                                        details: product['name'],
+                                        imageUrl:
+                                            product['selectedPhotos'].first,
+                                        category: Category.men,
+                                        shopId: product['shopId'],
+                                        productId: product['productId'],
+                                      ),
                                     ),
                                   ));
                             },

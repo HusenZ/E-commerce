@@ -1,5 +1,12 @@
 enum Category { men, women, baby, cosmetic }
 
+const mapCategory = {
+  'men': Category.men,
+  'women': Category.women,
+  'baby': Category.baby,
+  'cosmetic': Category.cosmetic,
+};
+
 class Product {
   final String name;
   final String price;
@@ -7,6 +14,7 @@ class Product {
   final String imageUrl;
   final Category category;
   final String shopId;
+  final String productId;
 
   Product({
     required this.name,
@@ -15,6 +23,7 @@ class Product {
     required this.imageUrl,
     required this.category,
     required this.shopId,
+    required this.productId,
   });
 }
 

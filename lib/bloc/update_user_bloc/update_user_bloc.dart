@@ -32,15 +32,10 @@ class UserUpdateBloc extends Bloc<UserUpdateEvent, UserUpdateState> {
             'name': event.name,
             'imgUrl': profileImgURL,
             'email': event.email,
-            // 'bio': event.bio,
           });
         }
 
         emit(UserUpdateSuccess());
-        // Create a stream controller to broadcast updates
-
-        // Expose the stream
-
         @override
         Future<void> close() {
           _userUpdateController.close();
