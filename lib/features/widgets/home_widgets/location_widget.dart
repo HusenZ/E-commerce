@@ -1,6 +1,5 @@
-import 'package:daprot_v1/bloc/location_bloc/user_locaion_events.dart';
-import 'package:daprot_v1/bloc/location_bloc/user_location_bloc.dart';
-import 'package:daprot_v1/bloc/location_bloc/user_location_state.dart';
+import 'package:daprot_v1/bloc/auth_bloc/auth_bloc.dart';
+import 'package:daprot_v1/bloc/auth_bloc/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
@@ -16,32 +15,26 @@ class LocationWidget extends StatefulWidget {
 
 class _LocationWidgetState extends State<LocationWidget> {
   // Initial Selected Value
-  String dropdownvalue = 'Current';
   String locationText = 'Current';
 
   @override
   void initState() {
     super.initState();
-    context.read<LocationBloc>().add(GetLocationEvent());
+    // context.read<LocationBloc>().add(GetLocationEvent());
   }
 
-  // List of items in our dropdown menu
-  var items = [
-    'Current',
-    'select city',
-  ];
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LocationBloc, LocationState>(
+    return BlocConsumer<AppBloc, AppState>(
       listener: (context, state) {
-        if (state is LocationLoadingState) {
-          locationText = 'Loading...';
-        }
-        if (state is LocationLoadedState) {
-          // Use the current location if available
-          locationText = state.placeName!;
-          debugPrint(locationText);
-        }
+        // if (state is LocationLoadingState) {
+        //   locationText = 'Loading...';
+        // }
+        // if (state is LocationLoadedState) {
+        //   // Use the current location if available
+        //   locationText = state.placeName!;
+        //   debugPrint(locationText);
+        // }
       },
       builder: (context, state) {
         return Row(

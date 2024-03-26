@@ -53,10 +53,6 @@ dependencies:
   shimmer: ^3.0.0
   sliver_tools: ^0.2.12
   uuid: ^4.3.3
-  geolocator: ^11.0.0
-  permission_handler: ^11.3.0
-  geocoding: ^3.0.0
-  fluttertoast: ^8.2.4
 
 dev_dependencies:
   flutter_test:
