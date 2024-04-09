@@ -18,6 +18,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         );
         String? locality =
             await fetchPlaceName(position.latitude, position.longitude);
+        debugPrint(locality);
         emit(LocationLoadedState(locality));
         // get the distance
         debugPrint("${position.latitude} and ${position.longitude}");

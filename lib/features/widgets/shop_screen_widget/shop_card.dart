@@ -87,13 +87,17 @@ class ShopCard extends StatelessWidget {
                     children: [
                       const Icon(Icons.schedule, size: 16.0),
                       const SizedBox(width: 4.0),
-                      Text("$openTime - $closeTime"),
-                      const Spacer(),
-                      const Icon(Icons.location_on, size: 16.0),
-                      const SizedBox(width: 4.0),
-                      Text(location),
+                      Text("$openTime - $closeTime")
                     ],
                   ),
+
+                  const SizedBox(width: 4.0),
+                  SizedBox(
+                      width: 80.w,
+                      child: Text(
+                        location,
+                        overflow: TextOverflow.ellipsis,
+                      )),
                   const SizedBox(height: 8.0),
                   // Ratings Row
                   Row(

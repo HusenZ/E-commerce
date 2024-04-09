@@ -10,8 +10,8 @@ class Shop {
   final String ownerPhone;
   final String shopLogoPath;
   final String shopBannerPath;
-  final String latitude;
-  final String longitude;
+  final double latitude;
+  final double longitude;
 
   const Shop({
     required this.cid,

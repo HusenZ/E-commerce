@@ -251,16 +251,16 @@ class _HomeScreenState extends State<HomeScreen> {
               //   sliver: TredingProducts(),
               // ),
               /*FILTER SECTION */
-              SliverAppBar(
-                backgroundColor: ColorsManager.whiteColor,
-                elevation: 2,
-                toolbarHeight: 2.h,
-                pinned: true,
-                flexibleSpace: FlexibleSpaceBar(
-                  background:
-                      _buildFilterSection(MediaQuery.of(context).size.width),
-                ),
-              ),
+              // SliverAppBar(
+              //   backgroundColor: ColorsManager.whiteColor,
+              //   elevation: 2,
+              //   toolbarHeight: 2.h,
+              //   pinned: true,
+              //   flexibleSpace: FlexibleSpaceBar(
+              //     background:
+              //         _buildFilterSection(MediaQuery.of(context).size.width),
+              //   ),
+              // ),
               // DisplayProduct(
               //   selectedOption: selectedOption,
               // ),
