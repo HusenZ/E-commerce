@@ -1,25 +1,52 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-enum Category { men, women, baby, cosmetic }
+enum Category {
+  fashion,
+  electronics,
+  homeAndGarden,
+  beautyAndHealth,
+  sportsAndOutdoors,
+  toysAndGames,
+  babyAndKids,
+  foodAndBeverages,
+  automotive,
+  pets,
+  booksAndStationery,
+  artsAndCrafts,
+  officeSupplies,
+  industrialAndScientific,
+}
 
 const mapCategory = {
-  'men': Category.men,
-  'women': Category.women,
-  'baby': Category.baby,
-  'cosmetic': Category.cosmetic,
+  'fashion': Category.fashion,
+  'electronics': Category.electronics,
+  'homeAndGarden': Category.homeAndGarden,
+  'beautyAndHealth': Category.beautyAndHealth,
+  "sportsAndOutdoors": Category.sportsAndOutdoors,
+  "toysAndGames": Category.toysAndGames,
+  "babyAndKids": Category.babyAndKids,
+  "foodAndBeverages": Category.foodAndBeverages,
+  "automotive": Category.automotive,
+  "pets": Category.pets,
+  "booksAndStationery": Category.booksAndStationery,
+  "artsAndCrafts": Category.artsAndCrafts,
+  "officeSupplies": Category.officeSupplies,
+  "industrialAndScientific": Category.industrialAndScientific,
 };
 
 class Product {
   final String name;
   final String price;
   final String details;
-  final String imageUrl;
-  final Category category;
+  final List<dynamic> imageUrl;
+  final Category? category;
   final String shopId;
   final String productId;
+  final String discountedPrice;
 
   Product({
     required this.name,
+    required this.discountedPrice,
     required this.price,
     required this.details,
     required this.imageUrl,
@@ -36,6 +63,7 @@ class Product {
         imageUrl: snapshot.get('imageUrl'),
         category: snapshot.get('category'),
         shopId: snapshot.get('shopId'),
+        discountedPrice: snapshot.get('discountedPrice'),
         productId: snapshot.get('productId'));
   }
 }
@@ -44,7 +72,7 @@ class CartProduct {
   final String name;
   final String price;
   final String details;
-  final String imageUrl;
+  final List<String> imageUrl;
   final Category category;
   final String cpId;
   final String shopId;

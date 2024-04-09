@@ -64,7 +64,7 @@ class StoreView extends StatelessWidget {
                   stream: repository.getProductStream(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                      return SliverToBoxAdapter(
+                      return const SliverToBoxAdapter(
                         child: Center(
                           child: Text('No products available'),
                         ),
@@ -91,11 +91,13 @@ class StoreView extends StatelessWidget {
                                         name: product['name'],
                                         price: product['price'],
                                         details: product['name'],
-                                        imageUrl:
-                                            product['selectedPhotos'].first,
-                                        category: Category.men,
+                                        imageUrl: product['selectedPhotos'],
+                                        category:
+                                            mapCategory[product['category']]!,
                                         shopId: product['shopId'],
                                         productId: product['productId'],
+                                        discountedPrice:
+                                            product['discountedPrice'],
                                       ),
                                     ),
                                   ));

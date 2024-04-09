@@ -59,10 +59,12 @@ class WishlistScreen extends StatelessWidget {
                         price: productSnapshot.data!['price'],
                         details: productSnapshot.data!['details'],
                         imageUrl: productSnapshot.data!['imageUrl'],
-                        category: Category
-                            .men, // Assuming Category is a class or enum
+                        category:
+                            mapCategory[productSnapshot.data!['category']]!,
                         shopId: productSnapshot.data!['shopId'],
                         productId: productIds[index],
+                        discountedPrice:
+                            productSnapshot.data!['discountedPrice'],
                       );
                       wishlistProducts.add(product);
                       return WishlistItemCard(

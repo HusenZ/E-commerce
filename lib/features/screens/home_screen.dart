@@ -272,10 +272,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         name: product.docs[index]['name'],
                         price: product.docs[index]['price'],
                         details: product.docs[index]['description'],
-                        imageUrl: product.docs[index]['selectedPhotos'].first,
+                        imageUrl: product.docs[index]['selectedPhotos'],
                         shopId: product.docs[index]['shopId'],
-                        category: Category.men,
-                        productId: product.docs[index]['productId']),
+                        category: mapCategory[product.docs[index]['category']]!,
+                        productId: product.docs[index]['productId'],
+                        discountedPrice: product.docs[index]
+                            ['discountedPrice']),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -285,11 +287,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 name: product.docs[index]['name'],
                                 price: product.docs[index]['price'],
                                 details: product.docs[index]['description'],
-                                imageUrl:
-                                    product.docs[index]['selectedPhotos'].first,
+                                imageUrl: product.docs[index]['selectedPhotos'],
                                 shopId: product.docs[index]['shopId'],
-                                category: Category.men,
-                                productId: product.docs[index]['productId']),
+                                category: mapCategory[product.docs[index]
+                                    ['category']]!,
+                                productId: product.docs[index]['productId'],
+                                discountedPrice: product.docs[index]
+                                    ['discountedPrice']),
                           ),
                         ),
                       );

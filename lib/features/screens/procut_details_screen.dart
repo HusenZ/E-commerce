@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:daprot_v1/bloc/cart_bloc/cart_bloc.dart';
 import 'package:daprot_v1/bloc/wish_list_bloc/wish_list_bloc.dart';
 import 'package:daprot_v1/config/theme/colors_manager.dart';
@@ -61,23 +63,80 @@ class _ProductScreenState extends State<ProductScreen> {
                   ),
                   SliverToBoxAdapter(
                     child: Padding(
+                      padding: EdgeInsets.all(8.sp),
+                      child: Container(
+                        child: CarouselSlider(
+                          options: CarouselOptions(
+                            aspectRatio: 4 / 4,
+                            autoPlay: false,
+                            enlargeCenterPage: false,
+                          ),
+                          items: widget.product.imageUrl.map((imgUrl) {
+                            return Builder(
+                              builder: (context) {
+                                return CachedNetworkImage(
+                                  imageUrl: imgUrl,
+                                  placeholder: (context, url) =>
+                                      Shimmer.fromColors(
+                                    baseColor: Colors.grey,
+                                    highlightColor: Colors.white,
+                                    child: Container(),
+                                  ),
+                                );
+                              },
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Image.network(widget.product.imageUrl),
                           Text(
                             widget.product.name,
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
-                          Text(widget.product.details),
-                          Text(
-                            "\$${widget.product.price}",
-                            style:
-                                Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          Row(
+                            children: [
+                              Text(
+                                "\$${widget.product.discountedPrice}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .copyWith(
                                       fontWeight: FontWeight.w700,
                                     ),
+                              ),
+                              SizedBox(
+                                width: 3.w,
+                              ),
+                              Text(
+                                "\$${widget.product.price}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .copyWith(
+                                      fontSize: 11.sp,
+                                      color: ColorsManager.hintTextColor,
+                                      decoration: TextDecoration.lineThrough,
+                                      decorationStyle: TextDecorationStyle.wavy,
+                                      decorationColor: ColorsManager.blackColor,
+                                    ),
+                              ),
+                            ],
                           ),
+                          Text(
+                            "Description",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(fontSize: 12.sp),
+                          ),
+                          Text(widget.product.details),
                           DelevatedButton(
                               text: _exists ? 'Go To Cart' : 'Add to Cart',
                               onTap: _exists
@@ -109,7 +168,10 @@ class _ProductScreenState extends State<ProductScreen> {
                           const Divider(),
                           Text(
                             "Shop Details",
-                            style: Theme.of(context).textTheme.bodyLarge,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(fontSize: 14.sp),
                           ),
                           StreamBuilder(
                               stream: ProductStream()
@@ -158,20 +220,32 @@ class _ProductScreenState extends State<ProductScreen> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text(
-                                                  snapshot.data!["name"],
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyLarge,
+                                                SizedBox(
+                                                  width: 60.w,
+                                                  child: Text(
+                                                    snapshot.data!["name"],
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyLarge!
+                                                        .copyWith(
+                                                            fontSize: 14.sp),
+                                                  ),
                                                 ),
-                                                Text(
-                                                  snapshot.data!["location"],
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyMedium!
-                                                      .copyWith(
-                                                          color: ColorsManager
-                                                              .hintTextColor),
+                                                SizedBox(
+                                                  width: 60.w,
+                                                  child: Text(
+                                                    snapshot.data!["location"],
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyMedium!
+                                                        .copyWith(
+                                                            color: ColorsManager
+                                                                .hintTextColor),
+                                                  ),
                                                 ),
                                               ],
                                             ),

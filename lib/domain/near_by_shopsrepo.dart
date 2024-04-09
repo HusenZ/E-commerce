@@ -69,9 +69,10 @@ class FirebaseService {
             price: data['price'],
             details: data['description'],
             imageUrl: data['selectedPhotos'],
-            category: mapCategory[data['category']] ?? Category.men,
+            category: mapCategory[data['category']] ?? Category.fashion,
             shopId: data['shopId'],
-            productId: data['productId']);
+            productId: data['productId'],
+            discountedPrice: data['discountedPrice']);
       }).toList();
 
       return products;

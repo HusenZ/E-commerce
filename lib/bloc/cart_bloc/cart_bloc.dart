@@ -34,9 +34,10 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         'price': event.product.price,
         'shopId': event.product.shopId,
         'description': event.product.details,
-        'category': event.product.category.name,
+        'category': event.product.category!.name,
         'image': event.product.imageUrl,
         'productId': event.product.productId,
+        'discountedPrice': event.product.discountedPrice,
         'cartItemId': itemId,
       });
       emit(CartAddSuccessState());

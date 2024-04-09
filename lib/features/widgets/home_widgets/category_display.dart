@@ -41,8 +41,9 @@ class DisplayProduct extends StatelessWidget {
                     details: product.docs[index]['description'],
                     imageUrl: product.docs[index]['selectedPhotos'].first,
                     shopId: product.docs[index]['shopId'],
-                    category: Category.men,
-                    productId: product.docs[index]['productId']),
+                    category: mapCategory[product.docs[index]['category']]!,
+                    productId: product.docs[index]['productId'],
+                    discountedPrice: product.docs[index]['discountedPrice']),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -55,8 +56,11 @@ class DisplayProduct extends StatelessWidget {
                             imageUrl:
                                 product.docs[index]['selectedPhotos'].first,
                             shopId: product.docs[index]['shopId'],
-                            category: Category.men,
-                            productId: product.docs[index]['productId']),
+                            category:
+                                mapCategory[product.docs[index]['category']]!,
+                            productId: product.docs[index]['productId'],
+                            discountedPrice: product.docs[index]
+                                ['discountedPrice']),
                       ),
                     ),
                   );

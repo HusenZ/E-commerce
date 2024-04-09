@@ -103,10 +103,13 @@ class _CartScreenState extends State<CartScreen> {
                                   details: snapshot.data!.docs[index]
                                       ['description'],
                                   imageUrl: snapshot.data!.docs[index]['image'],
-                                  category: Category.men,
+                                  category: mapCategory[
+                                      snapshot.data!.docs[index]['category']]!,
                                   shopId: snapshot.data!.docs[index]['shopId'],
                                   productId: snapshot.data!.docs[index]
                                       ['productId'],
+                                  discountedPrice: snapshot.data!.docs[index]
+                                      ['discountedPrice'],
                                 ),
                               ),
                             ),
@@ -114,7 +117,7 @@ class _CartScreenState extends State<CartScreen> {
                         },
                         child: CartItemCard(
                           productId: snapshot.data!.docs[index]['productId'],
-                          imageUrl: snapshot.data!.docs[index]['image'],
+                          imageUrl: snapshot.data!.docs[index]['image'].first,
                           title: snapshot.data!.docs[index]['name'],
                           price: snapshot.data!.docs[index]['price'],
                           quantity: itemQuantity,
@@ -136,7 +139,8 @@ class _CartScreenState extends State<CartScreen> {
                                     details: snapshot.data!.docs[index]
                                         ['description'],
                                     price: snapshot.data!.docs[index]['price'],
-                                    category: Category.men,
+                                    category: mapCategory[snapshot
+                                        .data!.docs[index]['category']]!,
                                   ),
                                 ],
                                 totalPrice: price,

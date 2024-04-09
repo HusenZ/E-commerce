@@ -40,7 +40,7 @@ class ProductCard extends StatelessWidget {
                     decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(8.0))),
                     child: Image.network(
-                      product.imageUrl,
+                      product.imageUrl.first,
                       fit: BoxFit.fill,
                     ),
                   ),
@@ -51,22 +51,29 @@ class ProductCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        product.name,
-                        style: Theme.of(context).textTheme.bodyMedium,
+                      SizedBox(
+                        width: 30.w,
+                        child: Text(
+                          product.name,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                       Text(
                         "\$${product.price}",
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
-                      Text(
-                        product.details,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall!
-                            .copyWith(color: ColorsManager.hintTextColor),
-                        maxLines: 2,
-                        overflow: TextOverflow.fade,
+                      SizedBox(
+                        width: 40.w,
+                        child: Text(
+                          product.details,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(color: ColorsManager.hintTextColor),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                       ElevatedButton(
                           onPressed: onTap,

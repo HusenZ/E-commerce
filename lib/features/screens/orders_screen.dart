@@ -85,11 +85,14 @@ class _OrderScreenState extends State<OrderScreen> {
                                         .data!
                                         .docs[index]['orderItems']
                                         .first['imageUrl'],
-                                    category: Category.men,
+                                    category: mapCategory[snapshot
+                                        .data!.docs[index]['category']]!,
                                     shopId: snapshot.data!.docs[index]
                                         ['shopId'],
                                     productId: snapshot.data!.docs[index]
-                                        ['productId']),
+                                        ['productId'],
+                                    discountedPrice: snapshot.data!.docs[index]
+                                        ['discountedPrice']),
                               ),
                             ),
                           );
