@@ -11,6 +11,7 @@ class UpdateUserEvent extends UserUpdateEvent {
   final String name;
   final String newProfileImagePath;
   final String email;
+  final String phone;
   final bool isProfileUpdated;
 
   // final String bio;
@@ -22,8 +23,10 @@ class UpdateUserEvent extends UserUpdateEvent {
     required this.newProfileImagePath,
     required this.email,
     required this.isProfileUpdated,
+    required this.phone,
   });
 
   @override
-  List<Object> get props => [name, newProfileImagePath,email,isProfileUpdated];
+  List<Object> get props =>
+      [name, newProfileImagePath, email, isProfileUpdated];
 }

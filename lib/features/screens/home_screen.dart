@@ -6,6 +6,7 @@ import 'package:daprot_v1/config/constants/app_images.dart';
 import 'package:daprot_v1/config/constants/city_const.dart';
 import 'package:daprot_v1/config/theme/colors_manager.dart';
 import 'package:daprot_v1/data/product.dart';
+import 'package:daprot_v1/domain/connectivity_helper.dart';
 import 'package:daprot_v1/domain/shop_data_repo.dart';
 import 'package:daprot_v1/features/screens/cart_screen.dart';
 import 'package:daprot_v1/features/screens/procut_details_screen.dart';
@@ -29,13 +30,19 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String selectedOption = "All";
   int _selectedIndex = 0;
+  bool isConnected = false;
   ProductStream repo = ProductStream();
   TextEditingController locaitonController = TextEditingController();
   TextEditingController locality = TextEditingController();
   @override
   void initState() {
     super.initState();
+    checkConnecivity();
     BlocProvider.of<LocationBloc>(context).add(GetLocationEvent());
+  }
+
+  void checkConnecivity() async {
+    isConnected = await ConnectivityHelper.checkConnection();
   }
 
   /*Home section */
@@ -43,7 +50,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return BlocConsumer<LocationBloc, LocationState>(
       listener: (context, state) {
         if (state is LocationLoadingState) {
-          locality.text = 'Loading...';
           LoadingDialog.showLoadingDialog(context);
         }
         if (state is LocationLoadedState) {
@@ -78,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Padding(
                         padding: EdgeInsets.only(top: 8.sp, left: 8.sp),
-                        child: const LocationWidget(),
+                        child: const WishBarWidgets(),
                       ),
                       InkWell(
                         onTap: () => Navigator.of(context).push(

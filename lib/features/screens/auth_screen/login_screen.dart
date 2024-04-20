@@ -1,4 +1,3 @@
-import 'package:daprot_v1/bloc/auth_bloc/auth_state.dart';
 import 'package:daprot_v1/bloc/google_auth_bloc/googe_auth_bloc.dart';
 import 'package:daprot_v1/bloc/google_auth_bloc/google_auth_event.dart';
 import 'package:daprot_v1/bloc/google_auth_bloc/google_auth_state.dart';
@@ -70,9 +69,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 }
               },
               builder: (context, state) {
-                if (state is AppStateLoading) {
-                  _isLoading = true;
-                }
                 return _isLoading
                     ? const LoadingButton()
                     : ElevatedButton(

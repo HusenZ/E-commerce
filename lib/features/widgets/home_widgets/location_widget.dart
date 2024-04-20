@@ -1,32 +1,57 @@
 import 'package:daprot_v1/config/constants/app_icons.dart';
+import 'package:daprot_v1/domain/user_data_repo.dart';
 import 'package:daprot_v1/features/screens/wish_list_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 
-class LocationWidget extends StatefulWidget {
-  const LocationWidget({
+class WishBarWidgets extends StatefulWidget {
+  const WishBarWidgets({
     super.key,
   });
 
   @override
-  State<LocationWidget> createState() => _LocationWidgetState();
+  State<WishBarWidgets> createState() => _WishBarWidgetsState();
 }
 
-class _LocationWidgetState extends State<LocationWidget> {
+class _WishBarWidgetsState extends State<WishBarWidgets> {
+  UserDataManager userStream = UserDataManager();
+  late String name;
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Padding(
-          padding: EdgeInsets.all(8.sp),
-          child: Text(
-            "Hello",
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(fontSize: 14.sp),
-          ),
-        ),
+        StreamBuilder(
+            stream: userStream.streamUser(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Padding(
+                  padding: EdgeInsets.all(8.sp),
+                  child: Shimmer.fromColors(
+                    baseColor: Colors.white,
+                    highlightColor: Colors.grey,
+                    child: Container(),
+                  ),
+                );
+              }
+              if (snapshot.data == null) {
+                name = 'Sir';
+              }
+              return Padding(
+                padding: EdgeInsets.all(8.sp),
+                child: SizedBox(
+                  width: 50.w,
+                  child: Text(
+                    "Hello ${snapshot.data!.name.split(' ').first}",
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(fontSize: 12.sp),
+                  ),
+                ),
+              );
+            }),
         const Spacer(),
         Container(
           height: 3.5.h,

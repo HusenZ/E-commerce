@@ -226,11 +226,12 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                 BlocProvider.of<UserUpdateBloc>(context)
                                     .add(UpdateUserEvent(
                                   userId: widget.userId!,
+                                  phone: widget.userPhone!,
                                   name: _nameController.text,
                                   newProfileImagePath: profileUpdated
                                       ? profileImgPath
                                       : widget.profileImg!,
-                                  email: _emailController.text,
+                                  email: widget.userEmail!,
                                   isProfileUpdated: profileUpdated,
                                 ));
                               },

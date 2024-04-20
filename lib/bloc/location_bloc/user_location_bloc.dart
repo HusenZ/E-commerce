@@ -14,21 +14,13 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       await requestLocationPermission();
       try {
         Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high,
+          desiredAccuracy: LocationAccuracy.low,
         );
         Placemark? locality =
             await fetchPlaceName(position.latitude, position.longitude);
         debugPrint(locality!.locality);
         emit(LocationLoadedState(locality));
-        // get the distance
         debugPrint("${position.latitude} and ${position.longitude}");
-        double distance = await calculateDistance(
-          userLatitude: position.latitude,
-          userLongitude: position.longitude,
-          endLatitude: position.latitude,
-          endLongitude: position.longitude,
-        );
-        emit(GetDistanceState(distance));
       } catch (e) {
         emit(LocationErrorState('Error getting location: $e'));
       }
@@ -76,33 +68,5 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         throw Exception('Location permission denied');
       }
     }
-  }
-
-  Future<double> calculateDistance({
-    required double userLatitude,
-    required double userLongitude,
-    required double endLatitude,
-    required double endLongitude,
-  }) async {
-    List<Placemark> startPlacemarks =
-        await placemarkFromCoordinates(userLatitude, userLongitude);
-    List<Placemark> endPlacemarks =
-        await placemarkFromCoordinates(endLatitude, endLongitude);
-    String startLocationName =
-        startPlacemarks.first.locality ?? 'Your Location';
-    String endLocationName =
-        endPlacemarks.first.locality ?? 'Restaurant Location';
-
-    double distance = Geolocator.distanceBetween(
-      userLatitude,
-      userLongitude,
-      endLatitude,
-      endLongitude,
-    );
-
-    debugPrint(
-        'Distance between $startLocationName and $endLocationName: $distance meters');
-
-    return distance / 1000;
   }
 }

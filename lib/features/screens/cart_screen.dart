@@ -1,15 +1,21 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:daprot_v1/bloc/cart_bloc/cart_bloc.dart';
+import 'package:daprot_v1/config/constants/lottie_img.dart';
+import 'package:daprot_v1/config/routes/routes_manager.dart';
 import 'package:daprot_v1/config/theme/colors_manager.dart';
 import 'package:daprot_v1/data/product.dart';
+import 'package:daprot_v1/domain/connectivity_helper.dart';
 import 'package:daprot_v1/domain/model/order_models.dart';
 import 'package:daprot_v1/domain/order_repo.dart';
 import 'package:daprot_v1/domain/shop_data_repo.dart';
 import 'package:daprot_v1/features/screens/procut_details_screen.dart';
 import 'package:daprot_v1/features/widgets/cart_screen_widget/cart_card.dart';
+import 'package:daprot_v1/features/widgets/common_widgets/delevated_button.dart';
 import 'package:daprot_v1/features/widgets/common_widgets/snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sizer/sizer.dart';
 import 'package:uuid/uuid.dart';
 
@@ -22,6 +28,7 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   String orderId = const Uuid().v1();
+  ProductStream stream = ProductStream();
   @override
   Widget build(BuildContext context) {
     int itemQuantity = 1;
@@ -29,18 +36,33 @@ class _CartScreenState extends State<CartScreen> {
 
     return Scaffold(
       body: StreamBuilder(
-          stream: ProductStream().getCartItems(),
+          stream: stream.getCartItems(),
           builder: (context, snapshot) {
-            print(snapshot.hasData);
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
             }
-            if (snapshot.data == null) {
-              return Center(
-                child: Text(
-                  "no data availabel",
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
+            if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  LottieBuilder.asset(AppLottie.cartEmpty),
+                  Center(
+                    child: Text(
+                      "Cart Is Empty, Add Proucts To Your Cart",
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          fontSize: 12.sp, color: ColorsManager.primaryColor),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  DelevatedButton(
+                      text: "Explore Proucts",
+                      onTap: () {
+                        ConnectivityHelper.naviagte(context, Routes.homeRoute);
+                      })
+                ],
               );
             }
             return CustomScrollView(

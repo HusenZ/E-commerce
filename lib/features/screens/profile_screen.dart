@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daprot_v1/bloc/update_user_bloc/update_user_bloc.dart';
 import 'package:daprot_v1/bloc/update_user_bloc/update_user_state.dart';
 import 'package:daprot_v1/config/constants/app_icons.dart';
@@ -38,6 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
+          backgroundColor: ColorsManager.whiteColor,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
           child: Padding(
@@ -72,12 +74,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         const Icon(Icons.error),
                   ),
                 ),
-                SizedBox(height: 20),
-                Text(
+                SizedBox(height: 2.h),
+                const Text(
                   'Are you sure you want to logout?',
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 2.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -88,7 +90,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           borderRadius: BorderRadius.circular(30.0),
                         ),
                       ),
-                      child: Text('Logout'),
+                      child: Text(
+                        'Logout',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(color: ColorsManager.whiteColor),
+                      ),
                       onPressed: () async {
                         await FirebaseAuth.instance.signOut();
                         final preferences =
@@ -105,7 +113,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           borderRadius: BorderRadius.circular(30.0),
                         ),
                       ),
-                      child: Text('Stay'),
+                      child: Text(
+                        'Stay',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(color: ColorsManager.whiteColor),
+                      ),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
@@ -131,7 +145,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               if (snapshot.hasData) {
                 user = snapshot.data;
               }
-              if (!snapshot.hasData) {
+              if (snapshot.data == null) {
                 debugPrint('!! Snapshot is not having data !!');
                 user = UserModel(
                     name: 'name',
@@ -231,16 +245,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       Padding(
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 5.w, vertical: 1.h),
-                                        child: Text(
-                                          "n orders in year",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium!
-                                              .copyWith(
-                                                  fontSize: 14.sp,
-                                                  color:
-                                                      ColorsManager.greyColor),
-                                        ),
+                                        child: StreamBuilder(
+                                            stream: FirebaseFirestore.instance
+                                                .collection('Users')
+                                                .doc(FirebaseAuth
+                                                    .instance.currentUser!.uid)
+                                                .collection('Orders')
+                                                .snapshots(),
+                                            builder: (context, snapshot) {
+                                              if (!snapshot.hasData) {
+                                                return Text(
+                                                  "Will be Updated Soon",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyMedium!
+                                                      .copyWith(
+                                                          fontSize: 10.sp,
+                                                          color: ColorsManager
+                                                              .greyColor),
+                                                );
+                                              }
+                                              print(snapshot.data);
+                                              return Text(
+                                                "${snapshot.data!.size} orders in a year",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium!
+                                                    .copyWith(
+                                                        fontSize: 14.sp,
+                                                        color: ColorsManager
+                                                            .greyColor),
+                                              );
+                                            }),
                                       ),
                                     ],
                                   ),
@@ -259,9 +295,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         InkWell(
                           onTap: () {
-                            print('UserName: ${user!.name}');
-                            print('userPhone: ${user!.phNo}');
-                            print('userEmail: ${user!.email}');
                             Navigator.push(
                               context,
                               MaterialPageRoute(

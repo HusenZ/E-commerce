@@ -78,7 +78,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       customSnackBar(context, "Successfully placed", true);
                     },
                   );
-                  Navigator.of(context).pop();
                 },
                 child: Text(
                   'Buy',

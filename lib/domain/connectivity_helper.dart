@@ -23,6 +23,13 @@ class ConnectivityHelper {
     }
   }
 
+  static Future<bool> checkConnection() async {
+    final ConnectivityResult connectivityResult =
+        await Connectivity().checkConnectivity();
+    final isConnected = connectivityResult != ConnectivityResult.none;
+    return isConnected;
+  }
+
   static Future<void> clareStackPush(BuildContext context, String route,
       {Object? args}) async {
     final ConnectivityResult connectivityResult =
@@ -35,7 +42,8 @@ class ConnectivityHelper {
     if (connectivityResult != ConnectivityResult.none) {
       Navigator.of(context).pushNamedAndRemoveUntil(route, (route) => false);
     } else {
-      Navigator.of(context).pushNamed(Routes.noInternetRoute);
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(Routes.noInternetRoute, (route) => false);
     }
   }
 

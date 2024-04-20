@@ -2,7 +2,6 @@ import 'package:daprot_v1/config/theme/colors_manager.dart';
 import 'package:daprot_v1/data/product.dart';
 import 'package:daprot_v1/domain/shop_data_repo.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sizer/sizer.dart';
 
 class ProductCard extends StatelessWidget {
@@ -121,14 +120,8 @@ class _HomeProductCardState extends State<HomeProductCard> {
     return ((originalPrice - discountedPrice) / originalPrice) * 100;
   }
 
-  Future<String> getShopName(String shopId) async {
-    shopName = await ProductStream().fetchShopName(shopId);
-    return shopName ?? '';
-  }
-
   @override
   void initState() {
-    getShopName(widget.product.shopId);
     super.initState();
   }
 
@@ -136,6 +129,7 @@ class _HomeProductCardState extends State<HomeProductCard> {
   Widget build(BuildContext context) {
     double originalPrice = double.parse(widget.product.price);
     double discountedPrice = double.parse(widget.product.discountedPrice);
+    ProductStream stream = ProductStream();
 
     double discountPercentage =
         calculateDiscountPercentage(originalPrice, discountedPrice);
@@ -206,10 +200,30 @@ class _HomeProductCardState extends State<HomeProductCard> {
                             ),
                           ],
                         ),
-                        SizedBox(
-                          width: 40.w,
-                          child: Text(shopName ?? ""),
-                        ),
+                        StreamBuilder(
+                            stream: stream.fetchShopName(widget.product.shopId),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                shopName = snapshot.data!['name'];
+                              } else {
+                                {
+                                  shopName = "";
+                                }
+                              }
+                              return SizedBox(
+                                width: 40.w,
+                                child: Text(
+                                  shopName!,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(
+                                          fontSize: 12.sp,
+                                          color: const Color.fromARGB(
+                                              255, 3, 103, 244)),
+                                ),
+                              );
+                            }),
                       ],
                     ),
                   ),

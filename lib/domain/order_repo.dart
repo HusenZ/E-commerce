@@ -14,8 +14,7 @@ class UserOrderRepository {
           .collection('Users')
           .doc(userId)
           .collection('Orders')
-          .doc("PendingOrder")
-          .set({
+          .add({
         'orderId': order.orderId,
       });
       await _firestore

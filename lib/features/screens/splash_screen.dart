@@ -2,8 +2,8 @@ import 'package:daprot_v1/config/constants/app_images.dart';
 import 'package:daprot_v1/config/constants/lottie_img.dart';
 import 'package:daprot_v1/config/routes/routes_manager.dart';
 import 'package:daprot_v1/config/theme/colors_manager.dart';
+import 'package:daprot_v1/domain/connectivity_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
@@ -20,7 +20,6 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
-
     navigation();
   }
 
@@ -32,9 +31,9 @@ class _SplashScreenState extends State<SplashScreen>
       print(
           "------------------preferences = ${preferences.getBool("isAuthenticated")}");
       if (isAuthenticated) {
-        Navigator.pushReplacementNamed(context, Routes.homeRoute);
+        Navigator.of(context).pushReplacementNamed(Routes.homeRoute);
       } else {
-        Navigator.pushReplacementNamed(context, Routes.authRoute);
+        Navigator.of(context).pushReplacementNamed(Routes.authRoute);
       }
     });
   }

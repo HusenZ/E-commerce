@@ -6,21 +6,11 @@ class ProductStream {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
 
-  Future<String?> fetchShopName(String shopId) async {
-    try {
-      // Reference to the shop document
-      final shopSnapshot = await FirebaseFirestore.instance
-          .collection('Shops')
-          .doc(shopId)
-          .get();
-
-      // Extract and return the shop name
-      return shopSnapshot['name'];
-    } catch (e) {
-      // Error occurred while fetching shop name
-      print('Error fetching shop name: $e');
-      return '';
-    }
+  Stream<DocumentSnapshot<Map<String, dynamic>>> fetchShopName(String shopId) {
+    return FirebaseFirestore.instance
+        .collection('Shops')
+        .doc(shopId)
+        .snapshots();
   }
 
   Stream<QuerySnapshot> getProductStream() {

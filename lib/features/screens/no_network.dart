@@ -1,4 +1,5 @@
 import 'package:daprot_v1/config/constants/lottie_img.dart';
+import 'package:daprot_v1/config/routes/routes_manager.dart';
 import 'package:daprot_v1/domain/connectivity_helper.dart';
 import 'package:daprot_v1/features/widgets/common_widgets/delevated_button.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class NoNetwork extends StatelessWidget {
           DelevatedButton(
               text: "Retry",
               onTap: () {
-                ConnectivityHelper.popIfConnected(context);
+                ConnectivityHelper.clareStackPush(context, Routes.homeRoute);
               })
         ],
       ),

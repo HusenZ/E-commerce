@@ -31,7 +31,6 @@ class _ShopsScreenState extends State<ShopsScreen> {
     return BlocConsumer<LocationBloc, LocationState>(
       listener: (context, state) {
         if (state is LocationLoadingState) {
-          locality = 'Loading...';
           LoadingDialog.showLoadingDialog(context);
         }
         if (state is LocationLoadedState) {
@@ -49,9 +48,6 @@ class _ShopsScreenState extends State<ShopsScreen> {
           body: StreamBuilder<List<Shop>>(
             stream: shopsStream.getNearbyShops(locality),
             builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              }
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               }
