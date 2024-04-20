@@ -1,12 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daprot_v1/bloc/update_user_bloc/update_user_bloc.dart';
 import 'package:daprot_v1/bloc/update_user_bloc/update_user_state.dart';
+import 'package:daprot_v1/config/constants/app_icons.dart';
 import 'package:daprot_v1/config/constants/app_images.dart';
 import 'package:daprot_v1/config/theme/colors_manager.dart';
 import 'package:daprot_v1/domain/model/user_model.dart';
 import 'package:daprot_v1/domain/user_data_repo.dart';
 import 'package:daprot_v1/features/screens/orders_screen.dart';
 import 'package:daprot_v1/features/screens/update_profile_screen.dart';
+import 'package:daprot_v1/features/screens/wish_list_screen.dart';
 import 'package:daprot_v1/features/widgets/common_widgets/single_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -142,6 +144,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 body: CustomScrollView(
                   slivers: [
                     SliverAppBar(
+                      automaticallyImplyLeading: false,
                       pinned: true,
                       backgroundColor: ColorsManager.whiteColor,
                       expandedHeight: 8.h,
@@ -214,11 +217,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       Padding(
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 5.w),
-                                        child: Text(
-                                          user!.name,
-                                          style: TextStyle(
-                                              fontSize: 24.sp,
-                                              fontWeight: FontWeight.bold),
+                                        child: SizedBox(
+                                          width: 50.w,
+                                          child: Text(
+                                            user!.name,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.bold),
+                                          ),
                                         ),
                                       ),
                                       Padding(
@@ -271,6 +278,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: const DsingleChildCard(
                               title: "Personal Info",
                               image: AppImages.profileLogo),
+                        ),
+                        SizedBox(
+                          height: 1.h,
+                        ),
+                        InkWell(
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const WishlistScreen(),
+                            ),
+                          ),
+                          child: const DsingleChildCard(
+                            title: "My WishList",
+                            image: AppIcons.favorite,
+                          ),
                         ),
                         SizedBox(
                           height: 1.h,

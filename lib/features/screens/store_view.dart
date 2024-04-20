@@ -61,7 +61,7 @@ class StoreView extends StatelessWidget {
                   closeTime: snapshot.data!["closeTime"],
                   locaion: snapshot.data!["location"]),
               StreamBuilder(
-                  stream: repository.getProductStream(),
+                  stream: repository.getShopProductStream(sellerId),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                       return const SliverToBoxAdapter(

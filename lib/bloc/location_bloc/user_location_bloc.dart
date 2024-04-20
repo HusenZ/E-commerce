@@ -16,9 +16,9 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high,
         );
-        String? locality =
+        Placemark? locality =
             await fetchPlaceName(position.latitude, position.longitude);
-        debugPrint(locality);
+        debugPrint(locality!.locality);
         emit(LocationLoadedState(locality));
         // get the distance
         debugPrint("${position.latitude} and ${position.longitude}");
@@ -35,8 +35,8 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     });
   }
   // Fucntion to fetch the name of the place
-  Future<String?> fetchPlaceName(double latitude, double longitude) async {
-    String? name;
+  Future<Placemark?> fetchPlaceName(double latitude, double longitude) async {
+    Placemark? place;
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(
         latitude,
@@ -44,18 +44,16 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       );
 
       if (placemarks.isNotEmpty) {
-        Placemark place = placemarks[0];
-        name = place.name;
+        place = placemarks[0];
         debugPrint(
             'Place Name: ${place.name}, ${place.locality}, ${place.country}');
       } else {
         debugPrint('No placemarks found');
-        name = '';
       }
     } catch (e) {
       debugPrint(e.toString());
     }
-    return name;
+    return place;
   }
 
   Future<void> requestLocationPermission() async {

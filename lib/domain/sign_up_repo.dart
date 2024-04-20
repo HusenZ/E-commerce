@@ -4,9 +4,32 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class SignUpApi {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  static final GoogleSignIn _googleSignIn = GoogleSignIn();
+  static final FirebaseAuth _auth = FirebaseAuth.instance;
+  static Future<bool> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleSignInAccount =
+          await _googleSignIn.signIn();
+      final GoogleSignInAuthentication googleSignInAuthentication =
+          await googleSignInAccount!.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+      await _auth.signInWithCredential(credential);
+      print("Success ---------------");
+      return true;
+    } on FirebaseAuthException catch (e) {
+      print("Error in google sign is :----- ${e.message}");
+      throw e;
+    }
+  }
+
   static Future<bool> addUser({
     required XFile profile,
     required String name,
@@ -26,12 +49,13 @@ class SignUpApi {
         'userId': uid,
         'name': name,
         'email': email,
-        'phone': phone,
+        'phone': '+91 $phone',
         'imgUrl': imgUrl,
       });
       print("User added to Firebase");
 
       // Return true to indicate success
+
       return true;
     } catch (e) {
       if (kDebugMode) {

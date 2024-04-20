@@ -1,16 +1,23 @@
+import 'package:daprot_v1/bloc/location_bloc/user_locaion_events.dart';
+import 'package:daprot_v1/bloc/location_bloc/user_location_bloc.dart';
+import 'package:daprot_v1/bloc/location_bloc/user_location_state.dart';
+import 'package:daprot_v1/config/constants/app_icons.dart';
+import 'package:daprot_v1/config/constants/app_images.dart';
+import 'package:daprot_v1/config/constants/city_const.dart';
 import 'package:daprot_v1/config/theme/colors_manager.dart';
 import 'package:daprot_v1/data/product.dart';
 import 'package:daprot_v1/domain/shop_data_repo.dart';
 import 'package:daprot_v1/features/screens/cart_screen.dart';
 import 'package:daprot_v1/features/screens/procut_details_screen.dart';
 import 'package:daprot_v1/features/screens/profile_screen.dart';
+import 'package:daprot_v1/features/screens/search_screen.dart';
 import 'package:daprot_v1/features/screens/shops_screen.dart';
+import 'package:daprot_v1/features/widgets/common_widgets/loading_dailog.dart';
 import 'package:daprot_v1/features/widgets/home_widgets/location_widget.dart';
 import 'package:daprot_v1/features/widgets/home_widgets/product_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
-
-import 'package:daprot_v1/features/widgets/home_widgets/banner_ads.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,174 +30,69 @@ class _HomeScreenState extends State<HomeScreen> {
   String selectedOption = "All";
   int _selectedIndex = 0;
   ProductStream repo = ProductStream();
-
-  /*Filter section */
-  Widget _buildFilterSection(double screenWidth) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
-    double horizontalMargin = screenWidth * 0.01;
-    double verticalMargin = 0.001.w;
-    double iconSize = screenWidth * 0.045;
-    double borderRadius = screenWidth * 0.04;
-    double borderWidth = screenWidth * 0.0025;
-    double spacing = screenWidth * 0.02;
-    double padding = screenWidth * 0.015;
-    double avatarRadius = screenWidth * 0.027;
-    return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: horizontalMargin,
-        vertical: verticalMargin,
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                _buildFilterOption(context, 'All', Icons.shop, iconSize,
-                    borderRadius, borderWidth, spacing, padding, avatarRadius),
-                _buildFilterOption(context, 'Men', Icons.boy, iconSize,
-                    borderRadius, borderWidth, spacing, padding, avatarRadius),
-                _buildFilterOption(context, 'Women', Icons.girl, iconSize,
-                    borderRadius, borderWidth, spacing, padding, avatarRadius),
-                _buildFilterOption(context, 'Baby', Icons.child_care, iconSize,
-                    borderRadius, borderWidth, spacing, padding, avatarRadius),
-                _buildFilterOption(
-                    context,
-                    'Cosmetic',
-                    Icons.style_outlined,
-                    iconSize,
-                    borderRadius,
-                    borderWidth,
-                    spacing,
-                    padding,
-                    avatarRadius),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /*Filter  */
-  Widget _buildFilterOption(
-      BuildContext context,
-      String text,
-      IconData iconData,
-      double iconSize,
-      double borderRadius,
-      double borderWidth,
-      double spacing,
-      double padding,
-      double avatarRadius) {
-    final bool isSelected =
-        selectedOption == text; // Check if this option is selected
-    final borderColor =
-        isSelected ? ColorsManager.primaryColor : Colors.grey.withOpacity(0.3);
-    final iconColor = isSelected
-        ? ColorsManager.whiteColor
-        : ColorsManager.iconColor; // Change icon color based on selection
-    final textColor = isSelected ? ColorsManager.primaryColor : Colors.black;
-
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedOption = text;
-        });
-      },
-      child: Container(
-        padding: EdgeInsets.only(right: padding),
-        margin: EdgeInsets.symmetric(horizontal: spacing),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(borderRadius),
-          border: Border.all(
-            color: borderColor,
-            width: borderWidth,
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(left: padding),
-              child: CircleAvatar(
-                backgroundColor: isSelected
-                    ? ColorsManager.secondaryColor
-                    : ColorsManager.unSelected,
-                radius: avatarRadius,
-                child: Icon(
-                  iconData,
-                  color: iconColor,
-                  size: iconSize,
-                ),
-              ),
-            ),
-            SizedBox(width: spacing),
-            Text(
-              text,
-              style: TextStyle(
-                fontSize: 10.sp, // Adjusted for screen width
-                color: textColor,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+  TextEditingController locaitonController = TextEditingController();
+  TextEditingController locality = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<LocationBloc>(context).add(GetLocationEvent());
   }
 
   /*Home section */
   Widget displayHomeScreen(BuildContext context) {
-    return StreamBuilder(
-        stream: repo.getProductStream(),
-        builder: (context, snapshot) {
-          final product = snapshot.data;
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator(); // Show loading indicator
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}'); // Show error message
-          }
-          if (product == null) {
-            return const Text("no prodcuts available");
-          }
-          return CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                elevation: 0,
-                backgroundColor: Colors.white,
-                expandedHeight: 20.h,
-                floating: false,
-                pinned: true,
-                flexibleSpace: FlexibleSpaceBar(
-                  title: Text(
-                    "\"Shop in your city\"",
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          fontSize: 12.sp,
-                          color: ColorsManager.blackColor,
-                        ),
+    return BlocConsumer<LocationBloc, LocationState>(
+      listener: (context, state) {
+        if (state is LocationLoadingState) {
+          locality.text = 'Loading...';
+          LoadingDialog.showLoadingDialog(context);
+        }
+        if (state is LocationLoadedState) {
+          locaitonController.text = state.placeName!.street ?? " null ";
+          setState(() {
+            locality.text = state.placeName!.locality ?? "Belgaum";
+          });
+          Navigator.pop(context);
+          debugPrint(locality.text);
+        }
+      },
+      builder: (context, state) {
+        return CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              elevation: 0,
+              automaticallyImplyLeading: false,
+              backgroundColor: Colors.white,
+              expandedHeight: 20.h,
+              floating: false,
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                expandedTitleScale: 1,
+                //background
+                background: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  expandedTitleScale: 1,
-                  //background
-                  background: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(top: 8.0, left: 8.0),
-                          child: LocationWidget(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 8.sp, left: 8.sp),
+                        child: const LocationWidget(),
+                      ),
+                      InkWell(
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                SearchScreen(location: locality.text),
+                          ),
                         ),
-                        Padding(
+                        child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
                             child: TextField(
-                              enabled: true,
+                              readOnly: true,
+                              enabled: false,
                               decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderSide:
@@ -229,83 +131,165 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
+                      ),
+                    ],
+                  ),
+                ),
+                title: InkWell(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) => Padding(
+                        padding: EdgeInsets.all(8.sp),
+                        child: Column(
+                          children: [
+                            TextField(
+                              controller: locaitonController,
+                              readOnly: true,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                              decoration: InputDecoration(
+                                hintText: 'District/city',
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(8.sp),
+                                  ),
+                                ),
+                                disabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(8.sp),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 1.h,
+                            ),
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: suggestedLocations.length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    title: Text(
+                                      suggestedLocations[index],
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
+                                    onTap: () {
+                                      setState(() {
+                                        locaitonController.text =
+                                            suggestedLocations[index];
+                                        locality.text =
+                                            suggestedLocations[index];
+                                      });
+                                      Navigator.of(context).pop();
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  child: Card(
+                    color: const Color.fromARGB(255, 184, 233, 238),
+                    shape: Border.all(
+                        style: BorderStyle.solid, color: Colors.white),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.location_on),
+                        Text(
+                          'Your are at ${locaitonController.text.trim().toUpperCase()}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(fontSize: 12.sp),
+                        ),
+                        const Icon(Icons.arrow_drop_down_circle_sharp)
                       ],
                     ),
                   ),
-                  collapseMode: CollapseMode.parallax,
-                  centerTitle: true,
-                  titlePadding: const EdgeInsets.all(8.0),
                 ),
+                collapseMode: CollapseMode.parallax,
                 centerTitle: true,
+                titlePadding: const EdgeInsets.all(8.0),
               ),
-              /*BANNER ADS*/
-              const SliverPadding(
-                padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-                sliver: SliverToBoxAdapter(
-                  child: BannerAds(),
-                ),
-              ),
-              /*TREDING PRODUCTS*/
-              // const SliverPadding(
-              //   padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-              //   sliver: TredingProducts(),
-              // ),
-              /*FILTER SECTION */
-              // SliverAppBar(
-              //   backgroundColor: ColorsManager.whiteColor,
-              //   elevation: 2,
-              //   toolbarHeight: 2.h,
-              //   pinned: true,
-              //   flexibleSpace: FlexibleSpaceBar(
-              //     background:
-              //         _buildFilterSection(MediaQuery.of(context).size.width),
-              //   ),
-              // ),
-              // DisplayProduct(
-              //   selectedOption: selectedOption,
-              // ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                    childCount: product.docs.length, (context, index) {
-                  return ProductCard(
-                    product: Product(
-                        name: product.docs[index]['name'],
-                        price: product.docs[index]['price'],
-                        details: product.docs[index]['description'],
-                        imageUrl: product.docs[index]['selectedPhotos'],
-                        shopId: product.docs[index]['shopId'],
-                        category: mapCategory[product.docs[index]['category']]!,
-                        productId: product.docs[index]['productId'],
-                        discountedPrice: product.docs[index]
-                            ['discountedPrice']),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProductScreen(
-                            product: Product(
-                                name: product.docs[index]['name'],
-                                price: product.docs[index]['price'],
-                                details: product.docs[index]['description'],
-                                imageUrl: product.docs[index]['selectedPhotos'],
-                                shopId: product.docs[index]['shopId'],
-                                category: mapCategory[product.docs[index]
-                                    ['category']]!,
-                                productId: product.docs[index]['productId'],
-                                discountedPrice: product.docs[index]
-                                    ['discountedPrice']),
+              centerTitle: true,
+            ),
+            // Row of categories.
+            StreamBuilder(
+                stream: repo.getProductsForShopsStream(locality.text.trim()),
+                builder: (context, snapshot) {
+                  final product = snapshot.data;
+                  if (product == null) {
+                    return const SliverToBoxAdapter(
+                        child: Text("no prodcuts available"));
+                  }
+                  if (snapshot.hasError) {
+                    return SliverToBoxAdapter(
+                      child: Text('Error: ${snapshot.error}'),
+                    );
+                  }
+                  return SliverGrid(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, // Number of grid columns
+                      crossAxisSpacing: 10, // Spacing between grid items
+                      mainAxisSpacing: 10, // Spacing between grid rows
+                      childAspectRatio:
+                          0.7, // Aspect ratio of grid items (width / height)
+                    ),
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        return HomeProductCard(
+                          product: Product(
+                            name: product.docs[index]['name'],
+                            price: product.docs[index]['price'],
+                            details: product.docs[index]['description'],
+                            imageUrl: product.docs[index]['selectedPhotos'],
+                            shopId: product.docs[index]['shopId'],
+                            category:
+                                mapCategory[product.docs[index]['category']],
+                            productId: product.docs[index]['productId'],
+                            discountedPrice: product.docs[index]
+                                ['discountedPrice'],
                           ),
-                        ),
-                      );
-                    },
-                    height: 30.h,
-                    width: 2.h,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProductScreen(
+                                  product: Product(
+                                    name: product.docs[index]['name'],
+                                    price: product.docs[index]['price'],
+                                    details: product.docs[index]['description'],
+                                    imageUrl: product.docs[index]
+                                        ['selectedPhotos'],
+                                    shopId: product.docs[index]['shopId'],
+                                    category: mapCategory[product.docs[index]
+                                        ['category']],
+                                    productId: product.docs[index]['productId'],
+                                    discountedPrice: product.docs[index]
+                                        ['discountedPrice'],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          height: 30.h,
+                          width: 2.h,
+                        );
+                      },
+                      childCount: product.docs.length,
+                    ),
                   );
                 }),
-              ),
-            ],
-          );
-        });
+          ],
+        );
+      },
+    );
   }
 
   final List _pages = [
@@ -332,37 +316,37 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              color: Color.fromARGB(255, 25, 33, 78),
+            icon: ImageIcon(
+              AssetImage(AppIcons.home),
+              color: Color.fromARGB(255, 14, 112, 241),
             ),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.shop,
-              color: Color.fromARGB(255, 19, 25, 61),
+            icon: ImageIcon(
+              AssetImage(AppIcons.shops),
+              color: Color.fromARGB(255, 14, 112, 241),
             ),
             label: 'Shops',
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.shopping_cart,
-              color: Color.fromARGB(255, 19, 25, 61),
+            icon: ImageIcon(
+              AssetImage(AppImages.cartLogo),
+              color: Color.fromARGB(255, 14, 112, 241),
             ),
             label: 'Cart',
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
-              color: Color.fromARGB(255, 19, 25, 61),
+            icon: ImageIcon(
+              AssetImage(AppImages.profileLogo),
+              color: Color.fromARGB(255, 14, 112, 241),
             ),
             label: 'Profile',
           ),
         ],
         currentIndex: _selectedIndex, // Set the current index
         selectedItemColor: const Color.fromARGB(
-            255, 25, 14, 241), // Customize selected item color
+            255, 14, 112, 241), // Customize selected item color
         onTap: _onItemTapped, // Handle item tap
       ),
     );

@@ -6,8 +6,45 @@ class ProductStream {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
 
+  Future<String?> fetchShopName(String shopId) async {
+    try {
+      // Reference to the shop document
+      final shopSnapshot = await FirebaseFirestore.instance
+          .collection('Shops')
+          .doc(shopId)
+          .get();
+
+      // Extract and return the shop name
+      return shopSnapshot['name'];
+    } catch (e) {
+      // Error occurred while fetching shop name
+      print('Error fetching shop name: $e');
+      return '';
+    }
+  }
+
   Stream<QuerySnapshot> getProductStream() {
-    return _firestore.collection('Products').snapshots();
+    return _firestore
+        .collection('Products')
+        .where('location', isEqualTo: 'Bagalkot')
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getProductsForShopsStream(
+      String locality) {
+    print("The locality on the stream ---> $locality");
+    return _firestore
+        .collection('Products')
+        .where('location', isEqualTo: locality)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getShopProductStream(
+      String shopId) {
+    return _firestore
+        .collection('Products')
+        .where('shopId', isEqualTo: shopId)
+        .snapshots();
   }
 
   Stream<DocumentSnapshot<Map<String, dynamic>>> getShopStream(String uid) {
@@ -35,6 +72,21 @@ class ProductStream {
       (querySnapshot) {
         final shops =
             querySnapshot.docs.map((doc) => Shop.fromFirestore(doc)).toList();
+        return shops;
+      },
+    );
+  }
+
+  Stream<List<Shop>> getNearbyShops(String? userLocality) {
+    print("Enterd the stream--- $userLocality");
+    return FirebaseFirestore.instance.collection('Shops').snapshots().map(
+      (querySnapshot) {
+        print(querySnapshot.docs.length);
+        final shops = querySnapshot.docs
+            .map((doc) => Shop.fromFirestore(doc))
+            .where((shop) => shop.location.contains(userLocality!))
+            .toList();
+        print(shops.first.shopName);
         return shops;
       },
     );

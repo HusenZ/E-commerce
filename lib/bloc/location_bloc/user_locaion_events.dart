@@ -6,3 +6,5 @@ abstract class LocationEvent extends Equatable {
 }
 
 class GetLocationEvent extends LocationEvent {}
+
+class FetchNearbyShopsEvent extends LocationEvent {}

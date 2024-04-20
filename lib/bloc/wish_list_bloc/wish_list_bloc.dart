@@ -51,7 +51,6 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
       emit(state.copyWith(loading: true));
       try {
         await _addToWishlist(event.product);
-        emit(state.copyWith(wishlist: [...state.wishlist, event.product]));
       } catch (e) {
         print("Error Ocred $e");
         emit(state.copyWith(error: true));
@@ -77,21 +76,12 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
   }
 
   Future<void> _addToWishlist(Product product) async {
-    final docRef = _firestore.collection('wishlists').doc(userId);
-    final currentWishlist = await docRef.get();
-    List<String> productIds = currentWishlist.exists
-        ? (currentWishlist.data()!['products'] as List<String>).toList()
-        : [];
-    productIds.add(product.productId);
-    await docRef.update({'products': productIds});
+    _firestore.collection('wishlists').doc(userId).set({
+      'productId': product.productId,
+    });
   }
 
   Future<void> _removeFromWishlist(Product product) async {
-    final docRef = _firestore.collection('wishlists').doc(userId);
-    final currentWishlist = await docRef.get();
-    List<String> productIds =
-        (currentWishlist.data()!['products'] as List<String>).toList();
-    productIds.remove(product.productId);
-    await docRef.update({'products': productIds});
+    final docRef = _firestore.collection('wishlists').doc(userId).delete();
   }
 }

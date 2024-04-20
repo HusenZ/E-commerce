@@ -1,50 +1,37 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daprot_v1/data/product.dart';
 import 'package:daprot_v1/domain/model/shop_model.dart';
 
-class FirebaseService {
+class FirebaseLocation {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<List<Shop>> getNearbyShops(double userLatitude, double userLongitude,
-      {double radius = 10}) async {
+  Future<List<Shop>> getNearbyShops(String? userLocality) async {
     try {
-      // Calculate latitude and longitude boundaries for the query
-      double lowerLat = userLatitude -
-          (radius /
-              111.12); // 1 degree of latitude is approximately 111.12 kilometers
-      double upperLat = userLatitude + (radius / 111.12);
-      double lowerLon =
-          userLongitude - (radius / (111.12 * cos(userLatitude * (pi / 180))));
-      double upperLon =
-          userLongitude + (radius / (111.12 * cos(userLatitude * (pi / 180))));
-
-      // Query for shops within the latitude and longitude boundaries
-      QuerySnapshot querySnapshot = await _firestore
-          .collection('shops')
-          .where('latitude', isGreaterThan: lowerLat)
-          .where('latitude', isLessThan: upperLat)
-          .where('longitude', isGreaterThan: lowerLon)
-          .where('longitude', isLessThan: upperLon)
-          .get();
+      // Query all shops
+      QuerySnapshot querySnapshot = await _firestore.collection('Shops').get();
 
       // Convert query snapshot to list of shops
-      List<Shop> nearbyShops = querySnapshot.docs.map((DocumentSnapshot doc) {
+      List<Shop> allShops = querySnapshot.docs.map((DocumentSnapshot doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
         return Shop(
-            cid: data['cid'],
-            openTime: data['openTime'],
-            closeTime: data['closeTime'],
-            deliveryAvailable: data['delivery'],
-            location: data['location'],
-            shopName: data['name'],
-            ownerPhone: data['phNo'],
-            shopLogoPath: data['shopLogo'],
-            shopBannerPath: data['shopBanner'],
-            latitude: data['latitude'],
-            longitude: data['longitude']);
+          cid: data['id'],
+          openTime: data['openTime'],
+          closeTime: data['closeTime'],
+          deliveryAvailable: data['delivery'],
+          location: data['location'],
+          shopName: data['name'],
+          ownerPhone: data['phoneNo'],
+          shopLogoPath: data['shopLogo'],
+          shopBannerPath: data['shopImage'],
+          latitude: data['latitude'],
+          longitude: data['longitude'],
+        );
       }).toList();
+
+      // Filter shops based on locality match
+      List<Shop> nearbyShops = allShops
+          .where((shop) => shop.location.contains(userLocality!))
+          .toList();
 
       return nearbyShops;
     } catch (e) {

@@ -1,4 +1,6 @@
+import 'package:daprot_v1/domain/model/shop_model.dart';
 import 'package:equatable/equatable.dart';
+import 'package:geocoding/geocoding.dart';
 
 abstract class LocationState extends Equatable {
   @override
@@ -10,7 +12,7 @@ class LocationInitialState extends LocationState {}
 class LocationLoadingState extends LocationState {}
 
 class LocationLoadedState extends LocationState {
-  final String? placeName;
+  final Placemark? placeName;
 
   LocationLoadedState(this.placeName);
 
@@ -34,4 +36,16 @@ class GetDistanceState extends LocationState {
 
   @override
   List<Object?> get props => [distance];
+}
+
+class NearbyShopsLoadingState extends LocationState {}
+
+class NearbyShopsLoadedState extends LocationState {
+  final List<Shop> nearbyShops;
+  NearbyShopsLoadedState(this.nearbyShops);
+}
+
+class NearbyShopsErrorState extends LocationState {
+  final String errorMessage;
+  NearbyShopsErrorState(this.errorMessage);
 }

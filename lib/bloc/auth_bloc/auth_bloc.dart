@@ -68,7 +68,7 @@ class AppBloc extends Bloc<AppEvents, AppState> {
                 vercode = verificationId;
                 ConnectivityHelper.naviagte(
                   event.context,
-                  Routes.otpRoute,
+                  Routes.homeRoute,
                   args: {
                     'name': event.fullName,
                     'email': event.email,

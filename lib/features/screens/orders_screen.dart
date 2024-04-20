@@ -86,13 +86,17 @@ class _OrderScreenState extends State<OrderScreen> {
                                         .docs[index]['orderItems']
                                         .first['imageUrl'],
                                     category: mapCategory[snapshot
-                                        .data!.docs[index]['category']]!,
+                                        .data!
+                                        .docs[index]['orderItems']
+                                        .first['category']]!,
                                     shopId: snapshot.data!.docs[index]
                                         ['shopId'],
                                     productId: snapshot.data!.docs[index]
                                         ['productId'],
-                                    discountedPrice: snapshot.data!.docs[index]
-                                        ['discountedPrice']),
+                                    discountedPrice: snapshot
+                                        .data!
+                                        .docs[index]['orderItems']
+                                        .first['discountedPrice']),
                               ),
                             ),
                           );
@@ -100,11 +104,13 @@ class _OrderScreenState extends State<OrderScreen> {
                         child: OrderItemCard(
                           productId: snapshot.data!.docs[index]['productId'],
                           imageUrl: snapshot.data!.docs[index]['orderItems']
-                              .first['imageUrl'],
+                              .first['imageUrl'].first,
                           title: snapshot
                               .data!.docs[index]['orderItems'].first['name'],
                           price: snapshot.data!.docs[index]['totalPrice'],
                           quantity: itemQuantity,
+                          orderStatus: snapshot.data!.docs[index]
+                              ['orderStatus'],
                         ),
                       );
                     },

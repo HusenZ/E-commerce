@@ -21,25 +21,32 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  String orderId = const Uuid().v1();
   @override
   Widget build(BuildContext context) {
     int itemQuantity = 1;
+    OrderModel? orderModel;
 
     return Scaffold(
       body: StreamBuilder(
           stream: ProductStream().getCartItems(),
           builder: (context, snapshot) {
+            print(snapshot.hasData);
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
             }
-            if (!snapshot.hasData) {
-              return const Center(
-                child: Text("no data availabel"),
+            if (snapshot.data == null) {
+              return Center(
+                child: Text(
+                  "no data availabel",
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
               );
             }
             return CustomScrollView(
               slivers: [
                 const SliverAppBar(
+                  automaticallyImplyLeading: false,
                   backgroundColor: ColorsManager.primaryColor,
                   title: Text("My Cart"),
                 ),
@@ -88,8 +95,10 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                       ),
                       onDismissed: (direction) {
-                        BlocProvider.of<CartBloc>(context).add(RemoveFromCart(
-                            snapshot.data!.docs[index]['cartItemId']));
+                        BlocProvider.of<CartBloc>(context).add(
+                          RemoveFromCart(
+                              snapshot.data!.docs[index]['cartItemId']),
+                        );
                         customSnackBar(context, 'Removed From the cart', true);
                       },
                       child: InkWell(
@@ -121,37 +130,64 @@ class _CartScreenState extends State<CartScreen> {
                           title: snapshot.data!.docs[index]['name'],
                           price: snapshot.data!.docs[index]['price'],
                           quantity: itemQuantity,
-                          onBuyPressed: (price, quantity) {
-                            try {
-                              UserOrderRepository().placeOrder(OrderModel(
+                          orderModel: OrderModel(
+                            shopId: snapshot.data!.docs[index]['shopId'],
+                            orderId: orderId,
+                            productId: snapshot.data!.docs[index]['productId'],
+                            orderItems: [
+                              OrderItem(
                                 shopId: snapshot.data!.docs[index]['shopId'],
-                                orderId: const Uuid().v4(),
-                                productId: snapshot.data!.docs[index]
-                                    ['productId'],
-                                orderItems: [
-                                  OrderItem(
-                                    shopId: snapshot.data!.docs[index]
-                                        ['shopId'],
-                                    cpId: const Uuid().v4(),
-                                    imageUrl: snapshot.data!.docs[index]
-                                        ['image'],
-                                    name: snapshot.data!.docs[index]['name'],
-                                    details: snapshot.data!.docs[index]
-                                        ['description'],
-                                    price: snapshot.data!.docs[index]['price'],
-                                    category: mapCategory[snapshot
-                                        .data!.docs[index]['category']]!,
-                                  ),
-                                ],
-                                totalPrice: price,
-                                userId: FirebaseAuth.instance.currentUser!.uid,
-                                orderStatus: OrderStatus.pending.name,
-                                quantity: quantity.toString(),
-                                orderDate: DateTime.now(),
-                              ));
+                                productId: const Uuid().v4(),
+                                imageUrl: snapshot.data!.docs[index]['image'],
+                                name: snapshot.data!.docs[index]['name'],
+                                details: snapshot.data!.docs[index]
+                                    ['description'],
+                                price: snapshot.data!.docs[index]['price'],
+                                discountedPrice: snapshot.data!.docs[index]
+                                    ['discountedPrice'],
+                                category: mapCategory[snapshot.data!.docs[index]
+                                    ['category']]!,
+                              ),
+                            ],
+                            totalPrice: 'price',
+                            userId: FirebaseAuth.instance.currentUser!.uid,
+                            orderStatus: OrderStatus.pending.name,
+                            quantity: '1',
+                            orderDate: DateTime.now(),
+                          ),
+                          onBuyPressed: (price, quantity) {
+                            OrderModel(
+                              shopId: snapshot.data!.docs[index]['shopId'],
+                              orderId: orderId,
+                              productId: snapshot.data!.docs[index]
+                                  ['productId'],
+                              orderItems: [
+                                OrderItem(
+                                  shopId: snapshot.data!.docs[index]['shopId'],
+                                  productId: const Uuid().v4(),
+                                  imageUrl: snapshot.data!.docs[index]['image'],
+                                  name: snapshot.data!.docs[index]['name'],
+                                  details: snapshot.data!.docs[index]
+                                      ['description'],
+                                  price: snapshot.data!.docs[index]['price'],
+                                  discountedPrice: snapshot.data!.docs[index]
+                                      ['discountedPrice'],
+                                  category: mapCategory[
+                                      snapshot.data!.docs[index]['category']]!,
+                                ),
+                              ],
+                              totalPrice: price,
+                              userId: FirebaseAuth.instance.currentUser!.uid,
+                              orderStatus: OrderStatus.pending.name,
+                              quantity: quantity.toString(),
+                              orderDate: DateTime.now(),
+                            );
+                            try {
+                              UserOrderRepository().placeOrder(
+                                orderModel!,
+                              );
                               customSnackBar(context, 'Success', true);
                             } catch (e) {
-                              print(e);
                               customSnackBar(context, 'Failed', false);
                             }
                           },

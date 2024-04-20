@@ -1,5 +1,6 @@
 import 'package:daprot_v1/bloc/auth_bloc/auth_bloc.dart';
 import 'package:daprot_v1/bloc/cart_bloc/cart_bloc.dart';
+import 'package:daprot_v1/bloc/google_auth_bloc/googe_auth_bloc.dart';
 import 'package:daprot_v1/bloc/location_bloc/user_location_bloc.dart';
 import 'package:daprot_v1/bloc/update_user_bloc/update_user_bloc.dart';
 import 'package:daprot_v1/bloc/wish_list_bloc/wish_list_bloc.dart';
@@ -28,6 +29,7 @@ void main() async {
       BlocProvider(create: (context) => AppBloc(preferences)),
       BlocProvider(create: (context) => UserUpdateBloc()),
       BlocProvider(create: (context) => LocationBloc()),
+      BlocProvider(create: (context) => GoogleSignInBloc(preferences)),
       BlocProvider(create: (context) => CartBloc()),
       BlocProvider(create: (context) => WishlistBloc()),
     ],

@@ -1,8 +1,11 @@
-import 'package:daprot_v1/bloc/auth_bloc/auth_bloc.dart';
-import 'package:daprot_v1/bloc/auth_bloc/auth_events.dart';
 import 'package:daprot_v1/bloc/auth_bloc/auth_state.dart';
+import 'package:daprot_v1/bloc/google_auth_bloc/googe_auth_bloc.dart';
+import 'package:daprot_v1/bloc/google_auth_bloc/google_auth_event.dart';
+import 'package:daprot_v1/bloc/google_auth_bloc/google_auth_state.dart';
+import 'package:daprot_v1/config/constants/app_images.dart';
 import 'package:daprot_v1/config/routes/routes_manager.dart';
 import 'package:daprot_v1/config/theme/colors_manager.dart';
+import 'package:daprot_v1/domain/connectivity_helper.dart';
 import 'package:daprot_v1/features/widgets/common_widgets/loading_button.dart';
 import 'package:daprot_v1/features/widgets/common_widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
@@ -18,12 +21,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _contactEditingController = TextEditingController();
   bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(254, 233, 231, 235),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         reverse: true,
@@ -31,58 +34,39 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              height: 17.h,
+              height: 15.h,
             ),
-            Image.asset(
-              "assets/images/dp.png",
-              width: 95.h,
-              height: 35.h,
-            ),
+            Image.asset(AppImages.daprotLogin),
             SizedBox(
               height: 2.h,
             ),
             Padding(
-              padding: EdgeInsets.only(left: 8.w, top: 4.h),
+              padding: EdgeInsets.only(left: 6.w, top: 4.h, right: 2.h),
               child: Text(
                 'Login',
-                style: TextStyle(
-                  fontSize: 4.h,
-                  fontWeight: FontWeight.w800,
-                ),
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),
             SizedBox(height: 2.h),
-            SizedBox(
-              width: 88.w,
-              height: 10.h,
-              child: InputTextField(
-                  contactEditingController: _contactEditingController),
-            ),
-            SizedBox(height: 2.h),
-            BlocConsumer<AppBloc, AppState>(
+            BlocConsumer<GoogleSignInBloc, GoogleSignInState>(
               listener: (context, state) {
-                if (state is PhoneNumberExistsState) {
-                  if (state.isExists) {
-                    setState(() {
-                      _isLoading = false;
-                    });
-                    Navigator.of(context).pushNamed(
-                      Routes.otpRoute,
-                      arguments: {
-                        'phoneNumber': '+91${_contactEditingController.text}',
-                      },
-                    );
-                  } else {
-                    setState(() {
-                      _isLoading = false;
-                    });
-                    Navigator.of(context).pushNamed(
-                      Routes.setProfileRoute,
-                      arguments: {
-                        'phoneNumber': '+91${_contactEditingController.text}',
-                      },
-                    );
-                  }
+                if (state is GoogleSignInLoading) {
+                  _isLoading = true;
+                }
+                if (state is NavigateToEnrollRoute) {
+                  ConnectivityHelper.naviagte(context, Routes.homeRoute);
+                  _isLoading = false;
+                }
+                if (state is SetProfileState) {
+                  ConnectivityHelper.naviagte(context, Routes.setProfileRoute);
+                  _isLoading = false;
+                }
+                if (state is GoogleSignInFailure) {
+                  _isLoading = false;
+                  customSnackBar(context, 'Error in signin', false);
+                }
+                if (state is GoogleSignInSuccess) {
+                  _isLoading = false;
                 }
               },
               builder: (context, state) {
@@ -99,24 +83,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 .textTheme
                                 .bodyLarge!
                                 .copyWith(fontSize: 20.sp)),
-                        child: const Text("Continue"),
+                        child: const Text("Sign In With Google"),
                         onPressed: () {
-                          if (_contactEditingController.text.isNotEmpty &&
-                              _contactEditingController.text.length == 10) {
-                            _isLoading = true;
-
-                            BlocProvider.of<AppBloc>(context).add(
-                                CheckPhoneEvent(
-                                    phoneNumber:
-                                        '+91${_contactEditingController.text}'));
-                          } else if (_contactEditingController.text.isEmpty) {
-                            customSnackBar(context,
-                                "Please enter your Mobile Number", false);
-                          } else if (_contactEditingController.text.length !=
-                              10) {
-                            customSnackBar(
-                                context, "Enter a valid Mobile Number", false);
-                          }
+                          BlocProvider.of<GoogleSignInBloc>(context)
+                              .add(GoogleSignInRequested());
                         },
                       );
               },
@@ -189,22 +159,21 @@ class InputTextField extends StatelessWidget {
       },
       decoration: InputDecoration(
         prefixText: '+91 ',
-        prefixStyle: TextStyle(
-          fontSize: 3.h,
-          color: Colors.black,
-          fontWeight: FontWeight.w600,
-        ),
+        prefixStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+              color: Colors.black,
+              fontWeight: FontWeight.w600,
+            ),
         hintText: 'Enter your phone number',
-        hintStyle: TextStyle(
-          fontSize: 3.h,
-          color: Colors.grey[400],
-        ),
+        hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+              color: Colors.grey[400],
+            ),
         focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: ColorsManager.primaryColor),
           borderRadius: BorderRadius.circular(10.0),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey[400]!, width: 1.0),
+          borderSide: const BorderSide(
+              color: Color.fromARGB(255, 122, 119, 119), width: 1.0),
           borderRadius: BorderRadius.circular(10.0),
         ),
       ),
@@ -213,7 +182,7 @@ class InputTextField extends StatelessWidget {
       inputFormatters: [
         LengthLimitingTextInputFormatter(10),
       ],
-      style: TextStyle(fontSize: 3.h),
+      style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 2.h),
     );
   }
 }

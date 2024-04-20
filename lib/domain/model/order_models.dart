@@ -88,19 +88,22 @@ class OrderItem {
   final String name;
   final String price;
   final String details;
-  final String imageUrl;
+  final List<dynamic> imageUrl;
   final Category category;
-  final String cpId;
   final String shopId;
+  final String productId;
+  final String discountedPrice;
 
-  OrderItem(
-      {required this.name,
-      required this.price,
-      required this.details,
-      required this.imageUrl,
-      required this.category,
-      required this.cpId,
-      required this.shopId});
+  OrderItem({
+    required this.name,
+    required this.discountedPrice,
+    required this.price,
+    required this.details,
+    required this.imageUrl,
+    required this.category,
+    required this.shopId,
+    required this.productId,
+  });
 
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
@@ -110,8 +113,9 @@ class OrderItem {
     result.addAll({'details': details});
     result.addAll({'imageUrl': imageUrl});
     result.addAll({'category': category.name});
-    result.addAll({'cpId': cpId});
+    result.addAll({'productId': productId});
     result.addAll({'shopId': shopId});
+    result.addAll({'discountedPrice': discountedPrice});
 
     return result;
   }
@@ -123,8 +127,9 @@ class OrderItem {
       details: map['details'] ?? '',
       imageUrl: map['imageUrl'] ?? '',
       category: map['category'],
-      cpId: map['cpId'] ?? '',
+      productId: map['productId'] ?? '',
       shopId: map['shopId'] ?? '',
+      discountedPrice: map['discountedPrice'] ?? '',
     );
   }
 

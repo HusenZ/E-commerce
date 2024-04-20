@@ -162,7 +162,7 @@ class UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             width: 85.w,
                             height: 8.h,
                             child: DTextformField(
-                              readOnly: false,
+                              readOnly: true,
                               keyboardType: TextInputType.emailAddress,
                               controller: _emailController,
                               hintText: widget.userEmail,

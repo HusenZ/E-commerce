@@ -23,6 +23,22 @@ class ConnectivityHelper {
     }
   }
 
+  static Future<void> clareStackPush(BuildContext context, String route,
+      {Object? args}) async {
+    final ConnectivityResult connectivityResult =
+        await Connectivity().checkConnectivity();
+    final isConnected = connectivityResult != ConnectivityResult.none;
+
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setBool('isConnected', isConnected);
+
+    if (connectivityResult != ConnectivityResult.none) {
+      Navigator.of(context).pushNamedAndRemoveUntil(route, (route) => false);
+    } else {
+      Navigator.of(context).pushNamed(Routes.noInternetRoute);
+    }
+  }
+
   static Future<void> naviagte(BuildContext context, String route,
       {Object? args}) async {
     final ConnectivityResult connectivityResult =

@@ -7,5 +7,5 @@ class AppImages {
   static const cartLogo = "assets/images/cartLogo.png";
   static const myOrdersLogo = "assets/images/myOrdersLogo.png";
   static const myRewardsLogo = "assets/images/myRewardsLogo.png";
-  static const daprotTextImage = " assets/images/daprot_splash.png";
+  static const daprotLogin = "assets/images/daprot_splash.png";
 }

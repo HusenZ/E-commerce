@@ -42,8 +42,8 @@ class WishlistScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 return FutureBuilder<DocumentSnapshot>(
                   future: FirebaseFirestore.instance
-                      .collection('products')
-                      .doc(productIds[index])
+                      .collection('wishList')
+                      .doc(FirebaseAuth.instance.currentUser!.uid)
                       .get(),
                   builder: (context, productSnapshot) {
                     if (productSnapshot.connectionState ==

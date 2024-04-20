@@ -1,3 +1,5 @@
+import 'package:daprot_v1/bloc/location_bloc/user_locaion_events.dart';
+import 'package:daprot_v1/bloc/location_bloc/user_location_bloc.dart';
 import 'package:daprot_v1/config/routes/routes_manager.dart';
 import 'package:daprot_v1/config/theme/theme_manager.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +20,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
+    final locationBloc = LocationBloc();
+
+    locationBloc.add(GetLocationEvent());
+
     return Sizer(
       builder: (context, orientation, deviceType) {
         return MaterialApp(
