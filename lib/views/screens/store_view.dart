@@ -151,7 +151,7 @@ class StoreView extends StatelessWidget {
                                   ));
                             },
                             title: product['name'],
-                            price: product['price'],
+                            price: product['discountedPrice'],
                             image: product['selectedPhotos'].first,
                           );
                         },

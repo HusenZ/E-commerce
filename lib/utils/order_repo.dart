@@ -4,6 +4,7 @@ import 'package:gozip/model/order_models.dart';
 import 'package:gozip/model/shipping_address.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:gozip/utils/new_fcm.dart';
 import 'package:http/http.dart' as http;
 
 class UserOrderRepository {
@@ -58,34 +59,10 @@ class UserOrderRepository {
       });
       final shopdoc =
           await _firestore.collection('Shops').doc(order.shopId).get();
-      sellerFcmToken = shopdoc['fcmToken'];
-      await fmessaging.requestPermission();
 
-      final doc = await _firestore
-          .collection('Users')
-          .doc(userId)
-          .collection('fcmToke')
-          .get();
-      print(doc.size);
-      if (doc.docs.isEmpty || doc.size == 0) {
-        await fmessaging.getToken().then((value) {
-          print('FCM---> Token---> $value');
-          _firestore
-              .collection('Users')
-              .doc(userId)
-              .collection('fcmToken')
-              .add({'token': value});
-        });
-      }
-      try {
-        sendFcmMessage(
-          'New Order Arrived',
-          'Hurry up!! Process the order, your customer is waiting.',
-          sellerFcmToken,
-        );
-      } catch (e) {
-        print("error in push notification :------> $e");
-      }
+      sellerFcmToken = shopdoc['fcmToken'];
+
+      await fmessaging.requestPermission();
 
       await _firestore
           .collection('Users')
@@ -98,6 +75,22 @@ class UserOrderRepository {
           doc.reference.delete();
         });
       });
+      try {
+        // sendFcmMessage(
+        //   'New Order Arrived',
+        //   'Hurry up!! Process the order, your customer is waiting.',
+        //   sellerFcmToken,
+        // );
+
+        /// new method
+        PushNotificationService.sendNotificationToSelectedUser(
+            sellerFcmToken!,
+            order.orderId,
+            'New Order Arrived',
+            'Hurry up!! Process the order, your customer is waiting.');
+      } catch (e) {
+        print("error in push notification :------> $e");
+      }
     } catch (e) {
       print('Error placing order: $e');
     }
@@ -131,22 +124,13 @@ class UserOrderRepository {
           .collection('fcmToke')
           .get();
       print(doc.size);
-      if (doc.docs.isEmpty || doc.size == 0) {
-        await fmessaging.getToken().then((value) {
-          print('FCM---> Token---> $value');
-          _firestore
-              .collection('Users')
-              .doc(userId)
-              .collection('fcmToken')
-              .add({'token': value});
-        });
-      }
+
       try {
-        sendFcmMessage(
-          'Requested For Cancellation',
-          'Process the order, your customer is waiting.',
-          sellerFcmToken,
-        );
+        PushNotificationService.sendNotificationToSelectedUser(
+            sellerFcmToken!,
+            orderId,
+            'Requested For Cancellation',
+            'Process the order, your customer is waiting.');
       } catch (e) {
         print("error in push notification :------> $e");
       }
