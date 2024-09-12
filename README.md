@@ -20,9 +20,9 @@ To run tests, run the following command
 
 ## App Logo
 
-![APP LOGO](https://drive.google.com/file/d/17WyOIZhYv4doqkMEw8Z5cV341HK86gt3/view?usp=sharing)
+![APP LOGO]([https://drive.google.com/file/d/17WyOIZhYv4doqkMEw8Z5cV341HK86gt3/view?usp=sharing](https://drive.google.com/file/d/17WyOIZhYv4doqkMEw8Z5cV341HK86gt3/view?usp=drive_link))
 
 
 ## Screen Shot
 
-![APP Overview](https://drive.google.com/file/d/1SInEXLuWBDozl_uQCEHhFl1q-xBHwLPO/view?usp=sharing)
+![APP Overview]([https://drive.google.com/file/d/1SInEXLuWBDozl_uQCEHhFl1q-xBHwLPO/view?usp=sharing](https://drive.google.com/file/d/1SInEXLuWBDozl_uQCEHhFl1q-xBHwLPO/view?usp=sharing))
