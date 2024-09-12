@@ -1,16 +1,28 @@
-# daprot_v1
 
-A new Flutter project.
+Belagavi E-commerce App
 
-## Getting Started
+This is a simple User app where Belagavi locals can buy the products from the local sellers.
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## Running Tests
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Make sure to create your own api for the gemini
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+To run tests, run the following command
+
+```bash
+  Flutter run
+```
+
+## Screen Shots
+
+
+
+## App Logo
+
+![APP LOGO](https://drive.google.com/file/d/17WyOIZhYv4doqkMEw8Z5cV341HK86gt3/view?usp=sharing)
+
+
+## Screen Shot
+
+![APP Overview](https://drive.google.com/file/d/1SInEXLuWBDozl_uQCEHhFl1q-xBHwLPO/view?usp=sharing)
