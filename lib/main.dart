@@ -4,7 +4,7 @@ import 'package:gozip/bloc/google_auth_bloc/googe_auth_bloc.dart';
 import 'package:gozip/bloc/review_bloc/add_review_bloc.dart';
 import 'package:gozip/bloc/update_user_bloc/update_user_bloc.dart';
 import 'package:gozip/bloc/wish_list_bloc/wish_list_bloc.dart';
-import 'package:gozip/config/app.dart';
+import 'package:gozip/core/app.dart';
 import 'package:gozip/firebase_options.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';

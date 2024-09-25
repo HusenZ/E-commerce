@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:gozip/model/shop_model.dart';
+import 'package:gozip/domain/entities/shop_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ProductStream {

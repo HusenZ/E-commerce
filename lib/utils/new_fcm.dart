@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:gozip/config/constants/private_constant.dart';
+import 'package:gozip/core/constants/private_constant.dart';
 import 'package:http/http.dart' as http;
 import 'package:googleapis_auth/auth_io.dart' as auth;
 

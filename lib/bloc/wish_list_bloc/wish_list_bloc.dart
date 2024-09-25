@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gozip/bloc/wish_list_bloc/wish_list_state.dart';
-import 'package:gozip/data/product.dart';
+import 'package:gozip/domain/entities/product.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:gozip/model/order_models.dart';
-import 'package:gozip/model/shipping_address.dart';
+import 'package:gozip/domain/entities/order_models.dart';
+import 'package:gozip/domain/entities/shipping_address.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:gozip/utils/new_fcm.dart';

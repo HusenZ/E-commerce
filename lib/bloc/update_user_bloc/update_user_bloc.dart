@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:gozip/bloc/update_user_bloc/update_user_state.dart';
-import 'package:gozip/model/user_model.dart';
+import 'package:gozip/domain/entities/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
