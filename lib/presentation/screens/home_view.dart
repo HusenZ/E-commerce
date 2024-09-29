@@ -4,6 +4,7 @@ import 'package:gozip/core/constants/lottie_img.dart';
 import 'package:gozip/core/theme/colors_manager.dart';
 import 'package:gozip/domain/entities/product.dart';
 import 'package:gozip/domain/entities/category.dart';
+import 'package:gozip/domain/repository/connectivity_helper.dart';
 import 'package:gozip/presentation/screens/product_details_screen.dart';
 import 'package:gozip/presentation/screens/search_screen.dart';
 import 'package:gozip/presentation/widgets/home_widgets/home_product_card.dart';
@@ -25,31 +26,11 @@ class HomeView extends StatefulWidget {
 class HomeViewState extends State<HomeView> {
   String selectedOption = 'all';
   String selectedSubCat = 'all';
+  final List<String> availableCities = ["Belagavi"];
 
   void changePreference(String newLocality) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString('location', newLocality);
-  }
-
-  //TODO: Remove later
-  void showLocationDailogue() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Notice'),
-          content: const Text('Available only at Belagavi for now.'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Continue'),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   Widget _buildFilterOption(
@@ -250,7 +231,7 @@ class HomeViewState extends State<HomeView> {
                 children: [
                   InkWell(
                     onTap: () {
-                      // updateLocationSheet(context);
+                      updateLocationSheet(context);
                     },
                     child: Container(
                       height: 20.h,
@@ -304,7 +285,12 @@ class HomeViewState extends State<HomeView> {
                                         color: Colors.white,
                                       ),
                                 ),
-                                const Icon(Icons.arrow_drop_down_circle_sharp)
+                                IconButton.filled(
+                                    onPressed: () {
+                                      updateLocationSheet(context);
+                                    },
+                                    icon: const Icon(
+                                        Icons.arrow_drop_down_circle))
                               ],
                             ),
                           ],
@@ -424,8 +410,7 @@ class HomeViewState extends State<HomeView> {
                     ),
                     title: InkWell(
                       onTap: () {
-                        // updateLocationSheet(context); //TODO: add that function
-                        showLocationDailogue();
+                        updateLocationSheet(context); //TODO: add that function
                       },
                       child: AnimationConfiguration.synchronized(
                         child: FlipAnimation(
@@ -554,7 +539,7 @@ class HomeViewState extends State<HomeView> {
                                     ['discountedPrice'],
                               ),
                               onTap: () async {
-                                Navigator.push(
+                                ConnectivityHelper.navigateRoute(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => ProductScreen(
@@ -578,6 +563,7 @@ class HomeViewState extends State<HomeView> {
                                     ),
                                   ),
                                 );
+
                                 await snapshot.data!.docs[index].reference
                                     .update({
                                   'clicks': FieldValue.increment(1),
@@ -624,56 +610,56 @@ class HomeViewState extends State<HomeView> {
         });
   }
 
-  // Future<dynamic> updateLocationSheet(BuildContext context) {
-  //   return showModalBottomSheet(
-  //     context: context,
-  //     builder: (context) => Padding(
-  //       padding: EdgeInsets.all(8.sp),
-  //       child: Column(
-  //         children: [
-  //           TextField(
-  //             readOnly: true,
-  //             style: Theme.of(context).textTheme.bodyMedium,
-  //             decoration: InputDecoration(
-  //               hintText: 'District/city',
-  //               enabledBorder: OutlineInputBorder(
-  //                 borderRadius: BorderRadius.all(
-  //                   Radius.circular(8.sp),
-  //                 ),
-  //               ),
-  //               disabledBorder: OutlineInputBorder(
-  //                 borderRadius: BorderRadius.all(
-  //                   Radius.circular(8.sp),
-  //                 ),
-  //               ),
-  //             ),
-  //           ),
-  //           SizedBox(
-  //             height: 1.h,
-  //           ),
-  //           Expanded(
-  //             child: ListView.builder(
-  //               itemCount: suggestedLocations.length,
-  //               itemBuilder: (context, index) {
-  //                 return ListTile(
-  //                   title: Text(
-  //                     suggestedLocations[index],
-  //                     style: Theme.of(context).textTheme.bodyMedium,
-  //                   ),
-  //                   onTap: () {
-  //                     setState(() {
-  //                       widget.locality.text = suggestedLocations[index];
-  //                       changePreference(suggestedLocations[index]);
-  //                     });
-  //                     Navigator.of(context).pop();
-  //                   },
-  //                 );
-  //               },
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
+  Future<dynamic> updateLocationSheet(BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      builder: (context) => Padding(
+        padding: EdgeInsets.all(8.sp),
+        child: Column(
+          children: [
+            TextField(
+              readOnly: true,
+              style: Theme.of(context).textTheme.bodyMedium,
+              decoration: InputDecoration(
+                hintText: 'District/city',
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(8.sp),
+                  ),
+                ),
+                disabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(8.sp),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 1.h,
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: availableCities.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(
+                      availableCities[index],
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    onTap: () {
+                      setState(() {
+                        widget.locality.text = availableCities[index];
+                        changePreference(availableCities[index]);
+                      });
+                      Navigator.of(context).pop();
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

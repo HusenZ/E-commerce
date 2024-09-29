@@ -23,6 +23,21 @@ class ConnectivityHelper {
     }
   }
 
+  static Future<void> navigateRoute(BuildContext context, Route route) async {
+    final ConnectivityResult connectivityResult =
+        await Connectivity().checkConnectivity();
+    if (connectivityResult != ConnectivityResult.none) {
+      // If connected, navigate to the specified route
+      if (context.mounted) {
+        Navigator.of(context).push(route);
+      }
+    } else {
+      if (context.mounted) {
+        Navigator.of(context).pushNamed(Routes.noInternetRoute);
+      }
+    }
+  }
+
   static Future<bool> checkConnection() async {
     final ConnectivityResult connectivityResult =
         await Connectivity().checkConnectivity();

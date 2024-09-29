@@ -1,7 +1,7 @@
 import 'package:gozip/domain/entities/shipping_address.dart';
 import 'package:gozip/domain/entities/user_model.dart';
-import 'package:gozip/utils/order_repo.dart';
-import 'package:gozip/utils/user_data_repo.dart';
+import 'package:gozip/domain/repository/order_repo.dart';
+import 'package:gozip/domain/repository/user_data_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 

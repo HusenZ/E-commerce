@@ -1,18 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gozip/bloc/location_bloc/user_locaion_events.dart';
+import 'package:gozip/bloc/location_bloc/user_location_bloc.dart';
+import 'package:gozip/bloc/location_bloc/user_location_state.dart';
 import 'package:gozip/core/constants/app_icons.dart';
 import 'package:gozip/core/constants/app_images.dart';
 import 'package:gozip/core/theme/colors_manager.dart';
-import 'package:gozip/utils/connectivity_helper.dart';
-import 'package:gozip/utils/shop_data_repo.dart';
+import 'package:gozip/domain/repository/connectivity_helper.dart';
+import 'package:gozip/domain/repository/shop_data_repo.dart';
 import 'package:gozip/presentation/screens/cart_screen.dart';
 import 'package:gozip/presentation/screens/home_view.dart';
 import 'package:gozip/presentation/screens/profile_screen.dart';
 import 'package:gozip/presentation/screens/shops_screen.dart';
-import 'package:gozip/presentation/widgets/common_widgets/welocme_dailog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:gozip/presentation/widgets/common_widgets/loading_dailog.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -52,30 +55,19 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    getLocation();
     notificationService();
     checkConnecivity();
-    checkUserVisit();
-    getLocation();
   }
 
   void checkConnecivity() async {
     isConnected = await ConnectivityHelper.checkConnection();
   }
 
-  void checkUserVisit() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    bool isNewUser = preferences.getBool('isNewUser') ?? false;
-    if (!isNewUser) {
-      WelcomeDailogue.showWelcomeDialog(context);
-      preferences.setBool('isNewUser', true);
-    }
-  }
-
   void getLocation() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    setState(() {
-      locality.text = preferences.getString('location') ?? "Belagavi";
-    });
+    if (context.mounted) {
+      context.read<LocationBloc>().add(GetLocationEvent());
+    }
   }
 
   /*Home section */
@@ -96,49 +88,67 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _selectedIndex == 0
-          ? HomeView(locality: locality)
-          : _pages[_selectedIndex],
-      /*BOTTOM NAVIGATION BAR */
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: ImageIcon(
-              AssetImage(AppIcons.home),
-              color: ColorsManager.primaryColor,
-            ),
-            label: 'Home',
+    return BlocBuilder<LocationBloc, LocationState>(
+      builder: (context, state) {
+        if (state is LocationLoadingState) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            LoadingDialog.showLoaderDialog(context);
+          });
+          return const SizedBox.shrink();
+        }
+        if (state is LocationLoadedState) {
+          print('----------->${state.placeName!.subLocality}');
+
+          locaitonController.text = state.placeName!.subLocality ?? "Belagavi";
+        }
+        if (state is LocationErrorState) {
+          return const SizedBox(); //TODO: add the error message
+        }
+        return Scaffold(
+          body: _selectedIndex == 0
+              ? HomeView(locality: locality)
+              : _pages[_selectedIndex],
+          /*BOTTOM NAVIGATION BAR */
+          bottomNavigationBar: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: ImageIcon(
+                  AssetImage(AppIcons.home),
+                  color: ColorsManager.primaryColor,
+                ),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: ImageIcon(
+                  AssetImage(AppIcons.shops),
+                  color: ColorsManager.primaryColor,
+                ),
+                label: 'Shops',
+              ),
+              BottomNavigationBarItem(
+                icon: ImageIcon(
+                  AssetImage(AppImages.cartLogo),
+                  color: ColorsManager.primaryColor,
+                ),
+                label: 'Cart',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.person_outline_rounded,
+                  color: ColorsManager.primaryColor,
+                ),
+                label: 'Profile',
+              ),
+            ],
+            currentIndex: _selectedIndex,
+            selectedItemColor: ColorsManager.primaryColor,
+            unselectedItemColor: ColorsManager.secondaryColor,
+            unselectedLabelStyle:
+                const TextStyle(color: ColorsManager.secondaryColor),
+            onTap: _onItemTapped,
           ),
-          BottomNavigationBarItem(
-            icon: ImageIcon(
-              AssetImage(AppIcons.shops),
-              color: ColorsManager.primaryColor,
-            ),
-            label: 'Shops',
-          ),
-          BottomNavigationBarItem(
-            icon: ImageIcon(
-              AssetImage(AppImages.cartLogo),
-              color: ColorsManager.primaryColor,
-            ),
-            label: 'Cart',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person_outline_rounded,
-              color: ColorsManager.primaryColor,
-            ),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: ColorsManager.primaryColor,
-        unselectedItemColor: ColorsManager.secondaryColor,
-        unselectedLabelStyle:
-            const TextStyle(color: ColorsManager.secondaryColor),
-        onTap: _onItemTapped,
-      ),
+        );
+      },
     );
   }
 }

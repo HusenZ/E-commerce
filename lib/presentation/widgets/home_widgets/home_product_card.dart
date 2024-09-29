@@ -1,7 +1,7 @@
 import 'package:gozip/core/theme/colors_manager.dart';
 import 'package:gozip/domain/entities/product.dart';
-import 'package:gozip/utils/rating_repo.dart';
-import 'package:gozip/utils/shop_data_repo.dart';
+import 'package:gozip/domain/repository/rating_repo.dart';
+import 'package:gozip/domain/repository/shop_data_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -52,24 +52,33 @@ class _HomeProductCardState extends State<HomeProductCard>
           borderRadius: BorderRadius.circular(15.sp),
           child: Container(
             padding: EdgeInsets.only(left: 9.sp),
-            height: 40.h,
-            width: 40.w,
-            color: ColorsManager.whiteColor,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15.0),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 3.0,
+                      blurRadius: 5.0)
+                ],
+                color: Colors.white),
+            // color: ColorsManager.whiteColor,
             child: Stack(
               children: [
-                Container(
-                  height: 21.5.h,
-                  width: 40.w,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(8.0),
-                    ),
-                    border: Border.all(color: Colors.grey),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        widget.product.imageUrl.first,
+                Hero(
+                  tag: widget.product.imageUrl.first,
+                  child: Container(
+                    height: 21.5.h,
+                    width: 40.w,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(8.0),
                       ),
-                      fit: BoxFit.cover,
+                      image: DecorationImage(
+                        image: NetworkImage(
+                          widget.product.imageUrl.first,
+                        ),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),

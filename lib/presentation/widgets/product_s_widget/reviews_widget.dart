@@ -1,5 +1,5 @@
 import 'package:gozip/domain/entities/user_model.dart';
-import 'package:gozip/utils/user_data_repo.dart';
+import 'package:gozip/domain/repository/user_data_repo.dart';
 import 'package:gozip/presentation/widgets/product_s_widget/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

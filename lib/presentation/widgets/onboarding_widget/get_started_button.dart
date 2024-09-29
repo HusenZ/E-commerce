@@ -1,6 +1,6 @@
 import 'package:gozip/core/routes/routes_manager.dart';
 import 'package:gozip/core/theme/colors_manager.dart';
-import 'package:gozip/utils/connectivity_helper.dart';
+import 'package:gozip/domain/repository/connectivity_helper.dart';
 import 'package:gozip/presentation/widgets/common_widgets/delevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';

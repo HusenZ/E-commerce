@@ -1,7 +1,7 @@
 import 'package:gozip/bloc/google_auth_bloc/google_auth_event.dart';
 import 'package:gozip/bloc/google_auth_bloc/google_auth_state.dart';
-import 'package:gozip/utils/phone_verfi_repo.dart';
-import 'package:gozip/utils/sign_up_repo.dart';
+import 'package:gozip/domain/repository/phone_verfi_repo.dart';
+import 'package:gozip/domain/repository/sign_up_repo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';

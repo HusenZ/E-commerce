@@ -1,5 +1,5 @@
 import 'package:gozip/core/routes/routes_manager.dart';
-import 'package:gozip/utils/connectivity_helper.dart';
+import 'package:gozip/domain/repository/connectivity_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';

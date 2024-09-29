@@ -12,4 +12,5 @@ class AppLottie {
   static const welcome = "${lottiePath}welcome.json";
   static const commingSoon = "${lottiePath}commingsoon.json";
   static const empty = "${lottiePath}empty.json";
+  static const locationLottie = "${lottiePath}getlocation.json";
 }

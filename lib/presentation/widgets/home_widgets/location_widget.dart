@@ -1,6 +1,6 @@
 import 'package:gozip/core/theme/colors_manager.dart';
-import 'package:gozip/utils/user_data_repo.dart';
-import 'package:gozip/utils/wish_list_repo.dart';
+import 'package:gozip/domain/repository/user_data_repo.dart';
+import 'package:gozip/domain/repository/wish_list_repo.dart';
 import 'package:gozip/presentation/screens/wish_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';

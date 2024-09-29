@@ -1,6 +1,6 @@
 import 'package:gozip/core/theme/colors_manager.dart';
 import 'package:gozip/domain/entities/shop_model.dart';
-import 'package:gozip/utils/shop_data_repo.dart';
+import 'package:gozip/domain/repository/shop_data_repo.dart';
 import 'package:gozip/presentation/screens/store_view.dart';
 import 'package:gozip/presentation/widgets/shop_screen_widget/shop_card.dart';
 import 'package:flutter/material.dart';
@@ -29,9 +29,69 @@ class _ShopsScreenState extends State<ShopsScreen> {
     });
   }
 
+  void changePreference(String newLocality) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString('location', newLocality);
+  }
+
+  final List<String> availableCities = ["Belagavi"];
+
   TextEditingController locaitonController = TextEditingController();
 
   TextEditingController locality = TextEditingController();
+
+  Future<dynamic> updateLocationSheet(BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      builder: (context) => Padding(
+        padding: EdgeInsets.all(8.sp),
+        child: Column(
+          children: [
+            TextField(
+              readOnly: true,
+              style: Theme.of(context).textTheme.bodyMedium,
+              decoration: InputDecoration(
+                hintText: 'District/city',
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(8.sp),
+                  ),
+                ),
+                disabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(8.sp),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 1.h,
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: availableCities.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(
+                      availableCities[index],
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    onTap: () {
+                      setState(() {
+                        locality.text = availableCities[index];
+                        changePreference(availableCities[index]);
+                      });
+                      Navigator.of(context).pop();
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,14 +102,81 @@ class _ShopsScreenState extends State<ShopsScreen> {
         backgroundColor: ColorsManager.primaryColor,
       ),
       body: StreamBuilder<List<Shop>>(
-        stream: shopsStream.getNearbyShops("Belagavi"),
+        stream: shopsStream.getNearbyShops(locality.text),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
           if (!snapshot.hasData) {
             print("no data");
-            return const Text("no shops available");
+            return Center(
+              child: InkWell(
+                onTap: () {},
+                child: Container(
+                  height: 20.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.sp),
+                    gradient: const LinearGradient(
+                      colors: [
+                        ColorsManager.primaryColor,
+                        ColorsManager.secondaryColor,
+                        ColorsManager.backgroundColor
+                      ],
+                    ),
+                    border: Border.all(color: Colors.teal.shade100),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(8.sp),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.location_on,
+                              color: Colors.white,
+                            ),
+                            Text(
+                              'Gozip is not Availbale at\n ${locality.text.trim().toUpperCase()}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(
+                                    fontSize: 12.sp,
+                                    color:
+                                        const Color.fromARGB(255, 246, 37, 37),
+                                  ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 1.h,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              'Explore Other Cities ',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(
+                                    fontSize: 12.sp,
+                                    color: Colors.white,
+                                  ),
+                            ),
+                            IconButton.filled(
+                                onPressed: () {
+                                  updateLocationSheet(context);
+                                },
+                                icon: const Icon(Icons.arrow_drop_down_circle))
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
           }
           final shops = snapshot.data!;
           return AnimationLimiter(

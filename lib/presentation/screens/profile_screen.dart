@@ -5,7 +5,7 @@ import 'package:gozip/core/constants/app_icons.dart';
 import 'package:gozip/core/routes/routes_manager.dart';
 import 'package:gozip/core/theme/colors_manager.dart';
 import 'package:gozip/domain/entities/user_model.dart';
-import 'package:gozip/utils/user_data_repo.dart';
+import 'package:gozip/domain/repository/user_data_repo.dart';
 import 'package:gozip/presentation/screens/orders_screen.dart';
 import 'package:gozip/presentation/screens/update_profile_screen.dart';
 import 'package:gozip/presentation/screens/wish_list_screen.dart';

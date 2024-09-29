@@ -4,7 +4,7 @@ import 'package:gozip/domain/entities/order_models.dart';
 import 'package:gozip/domain/entities/shipping_address.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:gozip/utils/new_fcm.dart';
+import 'package:gozip/domain/repository/new_fcm.dart';
 import 'package:http/http.dart' as http;
 
 class UserOrderRepository {

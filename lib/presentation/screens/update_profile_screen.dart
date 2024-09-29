@@ -4,7 +4,7 @@ import 'package:gozip/bloc/update_user_bloc/update_user_state.dart';
 import 'package:gozip/core/theme/colors_manager.dart';
 import 'package:gozip/core/theme/fonts_manager.dart';
 import 'package:gozip/domain/entities/shipping_address.dart';
-import 'package:gozip/utils/order_repo.dart';
+import 'package:gozip/domain/repository/order_repo.dart';
 import 'package:gozip/presentation/widgets/common_widgets/delevated_button.dart';
 import 'package:gozip/presentation/widgets/common_widgets/loading_button.dart';
 import 'package:gozip/presentation/widgets/common_widgets/loading_dailog.dart';

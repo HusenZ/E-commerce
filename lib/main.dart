@@ -1,6 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:gozip/bloc/cart_bloc/cart_bloc.dart';
 import 'package:gozip/bloc/google_auth_bloc/googe_auth_bloc.dart';
+import 'package:gozip/bloc/location_bloc/user_location_bloc.dart';
 import 'package:gozip/bloc/review_bloc/add_review_bloc.dart';
 import 'package:gozip/bloc/update_user_bloc/update_user_bloc.dart';
 import 'package:gozip/bloc/wish_list_bloc/wish_list_bloc.dart';
@@ -70,6 +71,7 @@ void main() async {
       BlocProvider(create: (context) => CartBloc()),
       BlocProvider(create: (context) => WishlistBloc()),
       BlocProvider(create: (context) => ProductReviewBloc()),
+      BlocProvider(create: (context) => LocationBloc(preferences)),
     ],
     child: MyApp(),
   ));

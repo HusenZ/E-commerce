@@ -6,10 +6,10 @@ import 'package:gozip/bloc/wish_list_bloc/wish_list_bloc.dart';
 import 'package:gozip/bloc/wish_list_bloc/wish_list_state.dart';
 import 'package:gozip/core/theme/colors_manager.dart';
 import 'package:gozip/domain/entities/product.dart';
-import 'package:gozip/utils/check_cart_repo.dart';
-import 'package:gozip/utils/rating_repo.dart';
-import 'package:gozip/utils/shop_data_repo.dart';
-import 'package:gozip/utils/wish_list_repo.dart';
+import 'package:gozip/domain/repository/check_cart_repo.dart';
+import 'package:gozip/domain/repository/rating_repo.dart';
+import 'package:gozip/domain/repository/shop_data_repo.dart';
+import 'package:gozip/domain/repository/wish_list_repo.dart';
 import 'package:gozip/presentation/screens/cart_screen.dart';
 import 'package:gozip/presentation/screens/store_view.dart';
 import 'package:gozip/presentation/widgets/common_widgets/delevated_button.dart';
@@ -111,13 +111,16 @@ class _ProductScreenState extends State<ProductScreen> {
                             items: widget.product.imageUrl.map((imgUrl) {
                               return Builder(
                                 builder: (context) {
-                                  return CachedNetworkImage(
-                                    imageUrl: imgUrl,
-                                    placeholder: (context, url) =>
-                                        Shimmer.fromColors(
-                                      baseColor: Colors.grey,
-                                      highlightColor: Colors.white,
-                                      child: Container(),
+                                  return Hero(
+                                    tag: widget.product.imageUrl.first,
+                                    child: CachedNetworkImage(
+                                      imageUrl: imgUrl,
+                                      placeholder: (context, url) =>
+                                          Shimmer.fromColors(
+                                        baseColor: Colors.grey,
+                                        highlightColor: Colors.white,
+                                        child: Container(),
+                                      ),
                                     ),
                                   );
                                 },

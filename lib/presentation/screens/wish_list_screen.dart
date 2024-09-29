@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gozip/core/constants/lottie_img.dart';
 import 'package:gozip/core/theme/colors_manager.dart';
 import 'package:gozip/domain/entities/product.dart';
-import 'package:gozip/utils/wish_list_repo.dart';
+import 'package:gozip/domain/repository/wish_list_repo.dart';
 import 'package:gozip/presentation/screens/index.dart';
 import 'package:gozip/presentation/widgets/wish_list_widgets/wish_list_card.dart';
 import 'package:flutter/material.dart';

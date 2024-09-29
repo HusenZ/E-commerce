@@ -2,10 +2,8 @@ import 'dart:async';
 import 'package:gozip/bloc/update_user_bloc/update_user_state.dart';
 import 'package:gozip/domain/entities/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'dart:io';
 import '../update_user_bloc/update_event_event.dart';
 
 class UserUpdateBloc extends Bloc<UserUpdateEvent, UserUpdateState> {
