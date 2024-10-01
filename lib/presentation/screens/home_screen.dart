@@ -6,8 +6,8 @@ import 'package:gozip/bloc/location_bloc/user_location_state.dart';
 import 'package:gozip/core/constants/app_icons.dart';
 import 'package:gozip/core/constants/app_images.dart';
 import 'package:gozip/core/theme/colors_manager.dart';
-import 'package:gozip/domain/repository/connectivity_helper.dart';
-import 'package:gozip/domain/repository/shop_data_repo.dart';
+import 'package:gozip/domain/helper/connectivity_helper.dart';
+import 'package:gozip/data/repository/shop_data_repo.dart';
 import 'package:gozip/presentation/screens/cart_screen.dart';
 import 'package:gozip/presentation/screens/home_view.dart';
 import 'package:gozip/presentation/screens/profile_screen.dart';
@@ -94,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             LoadingDialog.showLoaderDialog(context);
           });
-          return const SizedBox.shrink();
+          return const Scaffold();
         }
         if (state is LocationLoadedState) {
           print('----------->${state.placeName!.subLocality}');

@@ -10,11 +10,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LocationBloc extends Bloc<LocationEvent, LocationState> {
   SharedPreferences preferences;
-  LocationBloc(
-    this.preferences,
-  ) : super(LocationInitialState()) {
+  LocationBloc(this.preferences) : super(LocationInitialState()) {
     on<GetLocationEvent>((event, emit) async {
-      print("Entere the location bloc -----------");
       bool granted = await _requestLocationPermission();
       emit(LocationLoadingState());
       if (!granted) {
@@ -22,7 +19,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       }
       try {
         Position? position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.medium,
+          desiredAccuracy: LocationAccuracy.low,
         );
 
         Placemark? locality =
@@ -93,3 +90,14 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     }
   }
 }
+
+
+/*
+pub.dev
+
+location
+geocoding
+geolocator
+
+flutter toast
+*/

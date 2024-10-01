@@ -4,17 +4,15 @@ import 'package:gozip/bloc/update_user_bloc/update_user_state.dart';
 import 'package:gozip/core/theme/colors_manager.dart';
 import 'package:gozip/core/theme/fonts_manager.dart';
 import 'package:gozip/domain/entities/shipping_address.dart';
-import 'package:gozip/domain/repository/order_repo.dart';
+import 'package:gozip/data/repository/order_repo.dart';
 import 'package:gozip/presentation/widgets/common_widgets/delevated_button.dart';
 import 'package:gozip/presentation/widgets/common_widgets/loading_button.dart';
 import 'package:gozip/presentation/widgets/common_widgets/loading_dailog.dart';
-import 'package:gozip/presentation/widgets/common_widgets/profile_photo_widget.dart';
 import 'package:gozip/presentation/widgets/common_widgets/snack_bar.dart';
 import 'package:gozip/presentation/widgets/common_widgets/text_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 

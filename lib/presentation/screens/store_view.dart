@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gozip/core/theme/colors_manager.dart';
 import 'package:gozip/domain/entities/product.dart';
-import 'package:gozip/domain/repository/shop_data_repo.dart';
+import 'package:gozip/data/repository/shop_data_repo.dart';
 import 'package:gozip/presentation/screens/product_details_screen.dart';
 import 'package:gozip/presentation/widgets/product_s_widget/expandable_text.dart';
 import 'package:gozip/presentation/widgets/product_s_widget/row_procuts.dart';

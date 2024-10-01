@@ -4,7 +4,7 @@ import 'package:gozip/core/constants/lottie_img.dart';
 import 'package:gozip/core/theme/colors_manager.dart';
 import 'package:gozip/domain/entities/product.dart';
 import 'package:gozip/domain/entities/category.dart';
-import 'package:gozip/domain/repository/connectivity_helper.dart';
+import 'package:gozip/domain/helper/connectivity_helper.dart';
 import 'package:gozip/presentation/screens/product_details_screen.dart';
 import 'package:gozip/presentation/screens/search_screen.dart';
 import 'package:gozip/presentation/widgets/home_widgets/home_product_card.dart';

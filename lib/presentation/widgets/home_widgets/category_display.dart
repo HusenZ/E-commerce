@@ -1,5 +1,5 @@
 import 'package:gozip/domain/entities/product.dart';
-import 'package:gozip/domain/repository/shop_data_repo.dart';
+import 'package:gozip/data/repository/shop_data_repo.dart';
 import 'package:gozip/presentation/screens/product_details_screen.dart';
 import 'package:gozip/presentation/widgets/home_widgets/product_card.dart';
 import 'package:flutter/material.dart';

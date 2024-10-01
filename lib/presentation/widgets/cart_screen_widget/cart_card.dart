@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gozip/core/routes/routes_manager.dart';
 import 'package:gozip/core/theme/colors_manager.dart';
-import 'package:gozip/domain/repository/connectivity_helper.dart';
+import 'package:gozip/domain/helper/connectivity_helper.dart';
 import 'package:gozip/domain/entities/order_models.dart';
-import 'package:gozip/domain/repository/order_repo.dart';
-import 'package:gozip/domain/repository/review_repo.dart';
+import 'package:gozip/data/repository/order_repo.dart';
+import 'package:gozip/data/repository/review_repo.dart';
 import 'package:gozip/presentation/screens/add_review_screen.dart';
 import 'package:gozip/presentation/widgets/common_widgets/delevated_button.dart';
 import 'package:gozip/presentation/widgets/product_s_widget/expandable_text.dart';

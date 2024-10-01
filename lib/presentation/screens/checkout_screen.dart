@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:gozip/core/routes/routes_manager.dart';
 import 'package:gozip/core/theme/colors_manager.dart';
-import 'package:gozip/domain/repository/connectivity_helper.dart';
+import 'package:gozip/domain/helper/connectivity_helper.dart';
 import 'package:gozip/domain/entities/order_models.dart';
 import 'package:gozip/domain/entities/shipping_address.dart';
-import 'package:gozip/domain/repository/order_repo.dart';
+import 'package:gozip/data/repository/order_repo.dart';
 import 'package:gozip/presentation/widgets/common_widgets/delevated_button.dart';
 import 'package:gozip/presentation/widgets/common_widgets/loading_dailog.dart';
 import 'package:gozip/presentation/widgets/common_widgets/snack_bar.dart';

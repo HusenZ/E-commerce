@@ -3,7 +3,7 @@ import 'package:gozip/core/routes/routes_manager.dart';
 import 'package:gozip/core/theme/colors_manager.dart';
 import 'package:gozip/domain/entities/product.dart';
 import 'package:gozip/domain/entities/order_models.dart';
-import 'package:gozip/domain/repository/order_repo.dart';
+import 'package:gozip/data/repository/order_repo.dart';
 import 'package:gozip/presentation/widgets/common_widgets/loading_dailog.dart';
 import 'package:gozip/presentation/widgets/order_widgets/bottom_sheet_cancel.dart';
 import 'package:gozip/presentation/widgets/order_widgets/product_details_card.dart';

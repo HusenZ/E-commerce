@@ -1,5 +1,5 @@
 import 'package:gozip/core/theme/colors_manager.dart';
-import 'package:gozip/domain/repository/rating_repo.dart';
+import 'package:gozip/data/repository/rating_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 

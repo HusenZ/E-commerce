@@ -1,6 +1,6 @@
 import 'package:gozip/core/theme/colors_manager.dart';
 import 'package:gozip/domain/entities/shop_model.dart';
-import 'package:gozip/domain/repository/shop_data_repo.dart';
+import 'package:gozip/data/repository/shop_data_repo.dart';
 import 'package:gozip/presentation/screens/store_view.dart';
 import 'package:gozip/presentation/widgets/shop_screen_widget/shop_card.dart';
 import 'package:flutter/material.dart';

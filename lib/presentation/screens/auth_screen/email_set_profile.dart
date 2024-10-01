@@ -1,6 +1,6 @@
 import 'package:gozip/core/routes/routes_manager.dart';
-import 'package:gozip/domain/repository/connectivity_helper.dart';
-import 'package:gozip/domain/repository/sign_up_repo.dart';
+import 'package:gozip/domain/helper/connectivity_helper.dart';
+import 'package:gozip/data/repository/sign_up_repo.dart';
 import 'package:gozip/presentation/screens/auth_screen/login_screen.dart';
 import 'package:gozip/presentation/widgets/common_widgets/custom_text_field.dart';
 import 'package:gozip/presentation/widgets/common_widgets/delevated_button.dart';
