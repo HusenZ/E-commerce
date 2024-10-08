@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gozip/api.key.dart';
 import 'package:gozip/domain/entities/order_models.dart';
 import 'package:gozip/domain/entities/shipping_address.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,8 +22,7 @@ class UserOrderRepository {
       var url = 'https://fcm.googleapis.com/fcm/send';
       var header = {
         "Content-Type": "application/json",
-        "Authorization":
-            "key=AAAAMVCKqmI:APA91bGVWUfB8ixjD0S17O1g_f20vwmDjjvI4yRymNvOKmAVajqjQEox4UfFzYefq3o31fnt9k5ujyqA-SV8PNb5FWvvcNhe67vKa0Npa6FN2MSXHG8_yIZSimf3UWNrrQgU6G1n_j7r",
+        "Authorization": "key=$apikey",
       };
       var request = {
         "notification": {
