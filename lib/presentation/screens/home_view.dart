@@ -199,7 +199,7 @@ class HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    String trimmedLocality = widget.locality.text.trim();
+    String trimmedLocality = widget.locality.text.split(' ').first;
     if (trimmedLocality == 'Belgaum' ||
         trimmedLocality == 'Belgaum(Belagavi)' ||
         trimmedLocality == 'Belagavi(Belgaum)') {

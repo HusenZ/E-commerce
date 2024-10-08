@@ -15,7 +15,6 @@ import 'package:gozip/presentation/screens/shops_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:gozip/presentation/widgets/common_widgets/loading_dailog.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -66,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void getLocation() async {
     if (context.mounted) {
-      context.read<LocationBloc>().add(GetLocationEvent());
+      BlocProvider.of<LocationBloc>(context).add(GetLocationEvent());
     }
   }
 
@@ -88,67 +87,63 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LocationBloc, LocationState>(
-      builder: (context, state) {
-        if (state is LocationLoadingState) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            LoadingDialog.showLoaderDialog(context);
-          });
-          return const Scaffold();
-        }
+    return BlocListener<LocationBloc, LocationState>(
+      listener: (context, state) {
         if (state is LocationLoadedState) {
-          print('----------->${state.placeName!.subLocality}');
-
-          locaitonController.text = state.placeName!.subLocality ?? "Belagavi";
+          print('----------->${state.placeName!.administrativeArea}');
+          locaitonController.text =
+              state.placeName!.subAdministrativeArea ?? "Belagavi";
         }
-        if (state is LocationErrorState) {
-          return const SizedBox(); //TODO: add the error message
-        }
-        return Scaffold(
-          body: _selectedIndex == 0
-              ? HomeView(locality: locality)
-              : _pages[_selectedIndex],
-          /*BOTTOM NAVIGATION BAR */
-          bottomNavigationBar: BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: ImageIcon(
-                  AssetImage(AppIcons.home),
-                  color: ColorsManager.primaryColor,
-                ),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: ImageIcon(
-                  AssetImage(AppIcons.shops),
-                  color: ColorsManager.primaryColor,
-                ),
-                label: 'Shops',
-              ),
-              BottomNavigationBarItem(
-                icon: ImageIcon(
-                  AssetImage(AppImages.cartLogo),
-                  color: ColorsManager.primaryColor,
-                ),
-                label: 'Cart',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.person_outline_rounded,
-                  color: ColorsManager.primaryColor,
-                ),
-                label: 'Profile',
-              ),
-            ],
-            currentIndex: _selectedIndex,
-            selectedItemColor: ColorsManager.primaryColor,
-            unselectedItemColor: ColorsManager.secondaryColor,
-            unselectedLabelStyle:
-                const TextStyle(color: ColorsManager.secondaryColor),
-            onTap: _onItemTapped,
-          ),
-        );
       },
+      child: BlocBuilder<LocationBloc, LocationState>(
+        builder: (context, state) {
+          print("locality in the builder --------> ${locaitonController.text}");
+          return Scaffold(
+            body: _selectedIndex == 0
+                ? HomeView(locality: locaitonController)
+                : _pages[_selectedIndex],
+            /*BOTTOM NAVIGATION BAR */
+            bottomNavigationBar: BottomNavigationBar(
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: ImageIcon(
+                    AssetImage(AppIcons.home),
+                    color: ColorsManager.primaryColor,
+                  ),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: ImageIcon(
+                    AssetImage(AppIcons.shops),
+                    color: ColorsManager.primaryColor,
+                  ),
+                  label: 'Shops',
+                ),
+                BottomNavigationBarItem(
+                  icon: ImageIcon(
+                    AssetImage(AppImages.cartLogo),
+                    color: ColorsManager.primaryColor,
+                  ),
+                  label: 'Cart',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.person_outline_rounded,
+                    color: ColorsManager.primaryColor,
+                  ),
+                  label: 'Profile',
+                ),
+              ],
+              currentIndex: _selectedIndex,
+              selectedItemColor: ColorsManager.primaryColor,
+              unselectedItemColor: ColorsManager.secondaryColor,
+              unselectedLabelStyle:
+                  const TextStyle(color: ColorsManager.secondaryColor),
+              onTap: _onItemTapped,
+            ),
+          );
+        },
+      ),
     );
   }
 }

@@ -84,7 +84,14 @@ class SetProfileScreenState extends State<SetProfileScreen> {
               //     ],
               //   ),
               // ),
-              Image.asset('assets/images/d_newo.png'),
+              SizedBox(
+                height: 20.h,
+                width: 90.w,
+                child: Image.asset('assets/logo.png'),
+              ),
+              SizedBox(
+                height: 2.h,
+              ),
               Container(
                 height: 8.h,
                 width: 98.w,

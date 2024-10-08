@@ -1,3 +1,6 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gozip/bloc/location_bloc/user_locaion_events.dart';
+import 'package:gozip/bloc/location_bloc/user_location_bloc.dart';
 import 'package:gozip/core/routes/routes_manager.dart';
 import 'package:gozip/domain/helper/connectivity_helper.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +35,7 @@ class _SplashScreenState extends State<SplashScreen>
       if (isAuthenticated) {
         if (mounted) {
           const String homeRoute = Routes.homeRoute;
+          BlocProvider.of<LocationBloc>(context).add(GetLocationEvent());
           ConnectivityHelper.replaceIfConnected(context, homeRoute);
         }
       } else {

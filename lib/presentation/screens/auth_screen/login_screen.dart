@@ -5,20 +5,14 @@ import 'package:gozip/bloc/google_auth_bloc/google_auth_state.dart';
 import 'package:gozip/core/constants/app_images.dart';
 import 'package:gozip/core/routes/routes_manager.dart';
 import 'package:gozip/core/theme/colors_manager.dart';
-import 'package:gozip/core/theme/fonts_manager.dart';
-import 'package:gozip/data/repository/connectivity_connection.dart';
 import 'package:gozip/domain/helper/connectivity_helper.dart';
-import 'package:gozip/data/repository/phone_verfi_repo.dart';
-import 'package:gozip/presentation/screens/auth_screen/email_set_profile.dart';
 import 'package:gozip/presentation/widgets/common_widgets/loading_button.dart';
 import 'package:gozip/presentation/widgets/common_widgets/loading_dailog.dart';
 import 'package:gozip/presentation/widgets/common_widgets/snack_bar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -30,7 +24,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
-  final TextEditingController _emailContoller = TextEditingController();
+  // final TextEditingController _emailContoller = TextEditingController();
 
   void showLoading() {
     LoadingDialog.showLoaderDialog(context); // Pass the context of this screen
@@ -88,113 +82,113 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             SizedBox(height: 2.h),
-            Padding(
-              padding: EdgeInsets.all(8.sp),
-              child: Transform.scale(
-                scaleY: 0.23.w,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(2.w),
-                    color: ColorsManager.whiteColor,
-                    boxShadow: const [
-                      BoxShadow(),
-                    ],
-                  ),
-                  child: TextFormField(
-                    textCapitalization: TextCapitalization.sentences,
-                    textAlignVertical: TextAlignVertical.center,
-                    textAlign: TextAlign.start,
-                    cursorColor: ColorsManager.primaryColor,
-                    obscureText: false,
-                    controller: _emailContoller,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Enter the Email address';
-                      }
-                      String emailRegex =
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-                      if (!RegExp(emailRegex).hasMatch(value)) {
-                        return 'Enter a valid Email address';
-                      }
-                      return null;
-                    },
-                    keyboardType: TextInputType.emailAddress,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          fontSize: 12.sp,
-                        ),
-                    decoration: InputDecoration(
-                      labelStyle: TextStyle(
-                          fontSize: 13.sp,
-                          fontFamily: 'AppFonts',
-                          fontWeight: FontWeightManager.semiBold),
-                      labelText: 'Email',
-                      hintText: 'Type here...',
-                      disabledBorder: InputBorder.none,
-                      border: OutlineInputBorder(
-                          borderSide: const BorderSide(),
-                          borderRadius: BorderRadius.all(Radius.circular(3.w))),
-                      floatingLabelStyle: const TextStyle(
-                        color: ColorsManager.primaryColor,
-                        fontFamily: 'AppFonts',
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: ColorsManager.primaryColor,
-                        ),
-                        borderRadius: BorderRadius.all(Radius.circular(3.w)),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 1.h),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 104, 4, 137),
-                  foregroundColor: const Color.fromARGB(255, 247, 241, 241),
-                  textStyle: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(fontSize: 15.sp)),
-              child: const Text("Continue"),
-              onPressed: () async {
-                SharedPreferences preferences =
-                    await SharedPreferences.getInstance();
-                isConnected().then((value) {
-                  if (value) {
-                    showLoading();
-                    VerificationApi.emailExists(_emailContoller.text.trim())
-                        .then((value) {
-                      if (value) {
-                        FirebaseAuth.instance
-                            .signInWithEmailAndPassword(
-                                email: _emailContoller.text.trim(),
-                                password: '1er3t4y5u67')
-                            .then((value) {
-                          preferences.setBool('isAuthenticated', true);
-                          Navigator.of(context).pushNamed(Routes.homeRoute);
-                        });
-                      } else {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => EmailSetProfile(
-                              email: _emailContoller.text.trim()),
-                        ));
-                      }
-                    });
-                  } else {
-                    customSnackBar(context, 'Check Your Connection', false);
-                  }
-                });
-              },
-            ),
-            SizedBox(height: 1.h),
-            Text(
-              "OR",
-              style: TextStyle(
-                  fontWeight: FontWeightManager.extraBold, fontSize: 12.sp),
-            ),
-            SizedBox(height: 2.h),
+            // Padding(
+            //   padding: EdgeInsets.all(8.sp),
+            //   child: Transform.scale(
+            //     scaleY: 0.23.w,
+            //     child: Container(
+            //       decoration: BoxDecoration(
+            //         borderRadius: BorderRadius.circular(2.w),
+            //         color: ColorsManager.whiteColor,
+            //         boxShadow: const [
+            //           BoxShadow(),
+            //         ],
+            //       ),
+            //       child: TextFormField(
+            //         textCapitalization: TextCapitalization.sentences,
+            //         textAlignVertical: TextAlignVertical.center,
+            //         textAlign: TextAlign.start,
+            //         cursorColor: ColorsManager.primaryColor,
+            //         obscureText: false,
+            //         controller: _emailContoller,
+            //         validator: (value) {
+            //           if (value == null || value.isEmpty) {
+            //             return 'Enter the Email address';
+            //           }
+            //           String emailRegex =
+            //               r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+            //           if (!RegExp(emailRegex).hasMatch(value)) {
+            //             return 'Enter a valid Email address';
+            //           }
+            //           return null;
+            //         },
+            //         keyboardType: TextInputType.emailAddress,
+            //         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+            //               fontSize: 12.sp,
+            //             ),
+            //         decoration: InputDecoration(
+            //           labelStyle: TextStyle(
+            //               fontSize: 13.sp,
+            //               fontFamily: 'AppFonts',
+            //               fontWeight: FontWeightManager.semiBold),
+            //           labelText: 'Email',
+            //           hintText: 'Type here...',
+            //           disabledBorder: InputBorder.none,
+            //           border: OutlineInputBorder(
+            //               borderSide: const BorderSide(),
+            //               borderRadius: BorderRadius.all(Radius.circular(3.w))),
+            //           floatingLabelStyle: const TextStyle(
+            //             color: ColorsManager.primaryColor,
+            //             fontFamily: 'AppFonts',
+            //           ),
+            //           focusedBorder: OutlineInputBorder(
+            //             borderSide: const BorderSide(
+            //               color: ColorsManager.primaryColor,
+            //             ),
+            //             borderRadius: BorderRadius.all(Radius.circular(3.w)),
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(height: 1.h),
+            // ElevatedButton(
+            //   style: ElevatedButton.styleFrom(
+            //       backgroundColor: const Color.fromARGB(255, 104, 4, 137),
+            //       foregroundColor: const Color.fromARGB(255, 247, 241, 241),
+            //       textStyle: Theme.of(context)
+            //           .textTheme
+            //           .bodyLarge!
+            //           .copyWith(fontSize: 15.sp)),
+            //   child: const Text("Continue"),
+            //   onPressed: () async {
+            //     SharedPreferences preferences =
+            //         await SharedPreferences.getInstance();
+            //     isConnected().then((value) {
+            //       if (value) {
+            //         showLoading();
+            //         VerificationApi.emailExists(_emailContoller.text.trim())
+            //             .then((value) {
+            //           if (value) {
+            //             FirebaseAuth.instance
+            //                 .signInWithEmailAndPassword(
+            //                     email: _emailContoller.text.trim(),
+            //                     password: '1er3t4y5u67')
+            //                 .then((value) {
+            //               preferences.setBool('isAuthenticated', true);
+            //               Navigator.of(context).pushNamed(Routes.homeRoute);
+            //             });
+            //           } else {
+            //             Navigator.of(context).push(MaterialPageRoute(
+            //               builder: (context) => EmailSetProfile(
+            //                   email: _emailContoller.text.trim()),
+            //             ));
+            //           }
+            //         });
+            //       } else {
+            //         customSnackBar(context, 'Check Your Connection', false);
+            //       }
+            //     });
+            //   },
+            // ),
+            // SizedBox(height: 1.h),
+            // Text(
+            //   "OR",
+            //   style: TextStyle(
+            //       fontWeight: FontWeightManager.extraBold, fontSize: 12.sp),
+            // ),
+            // SizedBox(height: 2.h),
             BlocConsumer<GoogleSignInBloc, GoogleSignInState>(
               listener: (context, state) {
                 if (state is GoogleSignInLoading) {
