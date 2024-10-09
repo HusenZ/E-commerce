@@ -23,7 +23,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("$title, $body");
   AwesomeNotifications().createNotification(
     content: NotificationContent(
-      id: 123,
+      id: 10,
       channelKey: 'channelkey',
       color: Colors.white,
       category: NotificationCategory.Event,
@@ -37,7 +37,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  FirebaseMessaging.onBackgroundMessage(
+      (message) => _firebaseMessagingBackgroundHandler(message));
   await FirebaseAppCheck.instance.activate();
   AwesomeNotifications().initialize(null, [
     NotificationChannel(
